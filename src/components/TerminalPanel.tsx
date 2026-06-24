@@ -143,6 +143,9 @@ export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps
                 }
               }}
             />
+            <button type="submit" aria-label="Run terminal command">
+              ↵
+            </button>
           </form>
         </div>
       )}

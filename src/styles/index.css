@@ -1092,6 +1092,16 @@ button:disabled {
   caret-color: var(--yellow);
 }
 
+.terminal-console form button {
+  width: 24px;
+  height: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--yellow);
+  font: 10px var(--mono);
+  cursor: pointer;
+}
+
 .status-bar {
   display: flex;
   align-items: center;
