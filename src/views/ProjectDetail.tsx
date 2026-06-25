@@ -38,6 +38,34 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
         ))}
       </div>
 
+      <section className="project-record" aria-label="Project context">
+        {[
+          ['Context', project.context],
+          ['Status', project.status],
+          ['Role', project.role],
+          ['Evidence', project.evidence],
+        ].map(([label, value]) => (
+          <div key={label}>
+            <span>{label}</span>
+            <p>{value}</p>
+          </div>
+        ))}
+      </section>
+
+      {project.links?.length ? (
+        <section className="project-section">
+          <p className="eyebrow">Resources</p>
+          <h2>Verified links</h2>
+          <div className="tag-list tag-list--large">
+            {project.links.map((link) => (
+              <a className="tag" key={link.href} href={link.href} target="_blank" rel="noreferrer">
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       <section className="project-section">
         <p className="eyebrow">Overview</p>
         <h2>What this system explores</h2>
@@ -60,7 +88,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
                       <span>0{index + 1}</span>
                       <strong>{node}</strong>
                     </div>
-                    {index < nodes.length - 1 && <i aria-hidden="true">→</i>}
+                    {index < nodes.length - 1 && <i aria-hidden="true">-&gt;</i>}
                   </div>
                 ),
               )}
@@ -68,7 +96,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             <div className="retry-lane">
               <span>retry flow</span>
               <div />
-              <code>FAILED → retry policy → provider request</code>
+              <code>FAILED -&gt; retry policy -&gt; provider request</code>
             </div>
           </section>
           <section className="project-section">
@@ -100,16 +128,25 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
         </section>
       )}
 
-      <section className="project-section quality-section">
+      <section className="project-section project-decisions">
         <div>
-          <p className="eyebrow">Testing & quality</p>
-          <h2>Engineering posture</h2>
+          <p className="eyebrow">Decisions &amp; trade-offs</p>
+          <h2>Documented technical posture</h2>
+          <p>{project.tradeoffs}</p>
         </div>
         <ul>
-          <li>Validate behavior at service and API boundaries.</li>
-          <li>Keep error handling explicit and observable.</li>
-          <li>Document decisions that change reliability or maintainability.</li>
+          {project.decisions.map((decision) => (
+            <li key={decision}>{decision}</li>
+          ))}
         </ul>
+      </section>
+
+      <section className="project-section quality-section">
+        <div>
+          <p className="eyebrow">Testing &amp; quality</p>
+          <h2>Engineering posture</h2>
+        </div>
+        <p>{project.testing}</p>
       </section>
     </article>
   );

@@ -7,7 +7,7 @@ const suggestions = [
   'Show backend projects',
   'What projects use PostgreSQL?',
   'Is Julian a fit for Node.js backend roles?',
-  'Explain Julian’s AI tooling experience',
+  "Explain Julian's AI tooling experience",
 ];
 
 interface AiNavigatorProps {
@@ -19,8 +19,7 @@ interface AiNavigatorProps {
 export function AiNavigator({ open, onClose, onOpenFile }: AiNavigatorProps) {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState<AiResponse | null>(null);
-
-  if (!open) return null;
+  const action = response?.action;
 
   const ask = (value: string) => {
     if (!value.trim()) return;
@@ -29,7 +28,7 @@ export function AiNavigator({ open, onClose, onOpenFile }: AiNavigatorProps) {
   };
 
   return (
-    <aside className="ai-navigator">
+    <aside className={`ai-navigator ${open ? 'is-open' : 'is-closed'}`} aria-hidden={!open}>
       <header>
         <div>
           <span className="status-dot" />
@@ -48,7 +47,7 @@ export function AiNavigator({ open, onClose, onOpenFile }: AiNavigatorProps) {
           <span>JG</span>
         </div>
         <p className="ai-intro">
-          Ask questions about Julian’s projects, stack and experience. This assistant only uses
+          Ask questions about Julian&apos;s projects, stack and experience. This assistant only uses
           portfolio context.
         </p>
         <div className="ai-suggestions">
@@ -63,9 +62,9 @@ export function AiNavigator({ open, onClose, onOpenFile }: AiNavigatorProps) {
           <div className="ai-response">
             <span>NAVIGATOR_RESPONSE</span>
             <p>{response.text}</p>
-            {response.action && (
-              <button onClick={() => onOpenFile(response.action!.fileId)}>
-                {response.action.label} →
+            {action && (
+              <button onClick={() => onOpenFile(action.fileId)}>
+                {action.label} →
               </button>
             )}
           </div>

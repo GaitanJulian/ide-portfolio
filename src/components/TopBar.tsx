@@ -1,9 +1,18 @@
 interface TopBarProps {
+  activeFileTitle: string;
+  onOpenPalette: () => void;
   onToggleExplorer: () => void;
+  onToggleTerminal: () => void;
   onToggleAi: () => void;
 }
 
-export function TopBar({ onToggleExplorer, onToggleAi }: TopBarProps) {
+export function TopBar({
+  activeFileTitle,
+  onOpenPalette,
+  onToggleExplorer,
+  onToggleTerminal,
+  onToggleAi,
+}: TopBarProps) {
   return (
     <header className="top-bar">
       <div className="window-controls" aria-hidden="true">
@@ -18,11 +27,15 @@ export function TopBar({ onToggleExplorer, onToggleAi }: TopBarProps) {
         <span className="brand-mark">JG</span>
         <span>SYSTEM://JULIAN_GAITAN</span>
       </div>
-      <div className="command-center">
+      <button className="command-center" onClick={onOpenPalette} aria-label="Open command palette">
         <span>⌕</span>
         <span>portfolio / backend-workspace</span>
         <kbd>Ctrl K</kbd>
-      </div>
+      </button>
+      <strong className="mobile-active-file">{activeFileTitle}</strong>
+      <button className="mobile-tool" onClick={onToggleTerminal} aria-label="Toggle terminal">
+        &gt;_
+      </button>
       <button className="top-bar__ai" onClick={onToggleAi}>
         <span className="status-dot" />
         AI Navigator

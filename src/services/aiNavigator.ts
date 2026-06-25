@@ -11,14 +11,14 @@ const responses: { match: string[]; response: AiResponse }[] = [
   {
     match: ['backend projects', 'backend'],
     response: {
-      text: 'The clearest backend-focused projects are PaymentFlow, IncidentHub / StatusBoard and the B2B Matchmaking Platform.',
+      text: 'The clearest backend-focused projects are PaymentFlow, IncidentHub, StatusBoard, Logistics Data Pipeline and DocuFlow.',
       action: { label: 'Open project database', fileId: 'systems' },
     },
   },
   {
     match: ['postgres', 'postgresql'],
     response: {
-      text: 'PostgreSQL appears in PaymentFlow, Logistics Data Pipeline, IncidentHub / StatusBoard and the B2B Matchmaking Platform.',
+      text: 'PostgreSQL appears in PaymentFlow, Logistics Data Pipeline, IncidentHub and DocuFlow.',
       action: { label: 'Open capabilities.json', fileId: 'capabilities' },
     },
   },
@@ -33,7 +33,7 @@ const responses: { match: string[]; response: AiResponse }[] = [
     match: ['ai tooling', 'ai experience', 'whisper', 'ollama'],
     response: {
       text: 'Julian’s AI tooling context includes LLM code evaluation and local AI workflows using LangGraph, Ollama, Faster-Whisper and retrieval-style patterns.',
-      action: { label: 'Open Meeting Memory AI', fileId: 'meeting-memory' },
+      action: { label: 'Open experience.log', fileId: 'experience' },
     },
   },
   {

@@ -24,6 +24,14 @@ export interface Project {
   stack: string[];
   focus: string[];
   featured?: boolean;
+  context: string;
+  status: string;
+  role: string;
+  decisions: string[];
+  tradeoffs: string;
+  testing: string;
+  evidence: string;
+  links?: { label: string; href: string }[];
 }
 
 export interface TerminalLine {

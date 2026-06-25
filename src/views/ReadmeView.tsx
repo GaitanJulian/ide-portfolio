@@ -7,6 +7,8 @@ interface ReadmeViewProps {
 }
 
 export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
+  const featuredProjects = projects.filter((project) => project.featured);
+
   return (
     <div className="document readme-view">
       <section className="hero">
@@ -32,6 +34,9 @@ export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
           <button className="secondary-button" onClick={() => onOpen('contact')}>
             Open contact.sh
           </button>
+          <button className="secondary-button" onClick={() => onOpen('systems')}>
+            Browse all systems
+          </button>
         </div>
       </section>
 
@@ -53,16 +58,16 @@ export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
         <div className="section-heading">
           <div>
             <p className="eyebrow">Featured systems</p>
-            <h2>Production-minded case studies</h2>
+            <h2>Case studies built with production-minded practices</h2>
           </div>
-          <span className="section-index">03 / 06</span>
+          <span className="section-index">
+            {String(featuredProjects.length).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+          </span>
         </div>
         <div className="project-grid">
-          {projects
-            .filter((project) => project.featured)
-            .map((project) => (
-              <ProjectCard key={project.id} project={project} onOpen={onOpen} compact />
-            ))}
+          {featuredProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} onOpen={onOpen} compact />
+          ))}
         </div>
       </section>
 

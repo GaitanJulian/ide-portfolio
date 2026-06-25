@@ -3,7 +3,7 @@ import { fileRegistry } from '../data/fileRegistry';
 import type { FileCategory, FileKind } from '../types';
 
 const icons: Record<FileKind, string> = {
-  markdown: 'M↓',
+  markdown: 'M↳',
   yaml: 'Y',
   log: 'L',
   json: '{}',
@@ -31,8 +31,6 @@ export function FileExplorer({ activeFileId, onOpen, open }: FileExplorerProps) 
     lab: false,
   });
 
-  if (!open) return null;
-
   const renderFile = (fileId: string) => {
     const entry = fileRegistry.find((item) => item.id === fileId);
     if (!entry) return null;
@@ -44,18 +42,17 @@ export function FileExplorer({ activeFileId, onOpen, open }: FileExplorerProps) 
         title={entry.path}
       >
         <span className={`file-icon file-icon--${entry.kind}`}>{icons[entry.kind]}</span>
-        <span>{entry.filename}</span>
+        <span className="explorer-file__name">{entry.filename}</span>
       </button>
     );
   };
 
   return (
-    <aside className="file-explorer">
+    <aside className={`file-explorer ${open ? 'is-open' : 'is-closed'}`} aria-hidden={!open}>
       <div className="panel-heading">
         <span>EXPLORER</span>
-        <button aria-label="More explorer actions">•••</button>
       </div>
-      <button className="workspace-root">
+      <button className="workspace-root" onClick={() => onOpen('readme')}>
         <span>⌄</span> PORTFOLIO
       </button>
       <div className="explorer-tree">
@@ -73,7 +70,7 @@ export function FileExplorer({ activeFileId, onOpen, open }: FileExplorerProps) 
             {expanded[group.id] && (
               <div className="folder-children">
                 {fileRegistry
-                  .filter((entry) => entry.category === group.id && entry.id !== 'systems')
+                  .filter((entry) => entry.category === group.id)
                   .map((entry) => renderFile(entry.id))}
               </div>
             )}

@@ -5,11 +5,19 @@ import type { TerminalLine } from '../types';
 
 const aliases: Record<string, string> = {
   paymentflow: 'paymentflow',
+  urban: 'urban-map-bucaramanga',
+  'urban-map': 'urban-map-bucaramanga',
+  'urban-map-bucaramanga': 'urban-map-bucaramanga',
   logistics: 'logistics',
+  statusboard: 'statusboard',
   incidenthub: 'incidenthub',
-  'meeting-memory': 'meeting-memory',
-  b2b: 'b2b',
+  docuflow: 'docuflow',
+  gameinsider: 'gameinsider',
   'xr-thesis': 'xr-thesis',
+  systems: 'systems',
+  projects: 'systems',
+  'systems/index': 'systems',
+  'systems/index.md': 'systems',
   'README.md': 'readme',
   'profile.yaml': 'profile',
   'experience.log': 'experience',
@@ -24,6 +32,7 @@ interface TerminalPanelProps {
 
 export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps) {
   const [input, setInput] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
   const [lines, setLines] = useState<TerminalLine[]>([
     { id: 1, kind: 'output', text: 'Portfolio terminal ready. Type "help" for available commands.' },
   ]);
@@ -61,7 +70,13 @@ export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps
       output('README.md  profile.yaml  experience.log  capabilities.json  systems/  architecture/  lab/  contact.sh  resume.pdf');
     } else if (verb === 'cat') {
       const fileId = aliases[target] ?? fileRegistry.find((file) => file.filename === target)?.id;
-      output(fileId ? filesById[fileId].summary : `cat: ${target || '<file>'}: file not found`, fileId ? 'output' : 'error');
+      if (fileId === 'readme') {
+        output(
+          'Julian Gaitan - Backend Engineer, Colombia, remote-ready.\nFocus: reliable backend services, data workflows and production-minded systems.\nFeatured: PaymentFlow, Urban Map Bucaramanga, IncidentHub, DocuFlow and Logistics Data Pipeline.\nUse "open systems" to browse every documented project.',
+        );
+      } else {
+        output(fileId ? filesById[fileId].summary : `cat: ${target || '<file>'}: file not found`, fileId ? 'output' : 'error');
+      }
     } else if (verb === 'open') {
       const fileId = aliases[target] ?? fileRegistry.find((file) => file.filename === target)?.id;
       if (fileId) {
@@ -71,7 +86,7 @@ export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps
         output(`open: ${target || '<file>'}: not found. Try "projects" or "ls".`, 'error');
       }
     } else if (verb === 'projects') {
-      output(projects.map((project) => project.title).join(' · '));
+      output(`${projects.map((project) => project.id).join(' · ')} · systems/index\nUse "open systems" to browse the Project Database.`);
     } else if (verb === 'stack') {
       onOpenFile('capabilities');
       output('Backend · Databases · DevOps · Testing · AI Tooling · Creative Tech');
@@ -89,23 +104,41 @@ export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps
       output('opened ~/portfolio/lab/unity-experiments.md');
     } else {
       const suggestion = ['help', 'open', 'projects', 'stack'].find((item) => item.startsWith(verb[0] ?? ''));
-      output(`command not found: ${verb}.${suggestion ? ` Did you mean "${suggestion}"?` : ' Type "help".'}`, 'error');
+      output(`command not found: ${verb}.${suggestion ? ` Did you mean "${suggestion}"?` : ''} Type "help".`, 'error');
     }
   };
 
   return (
     <section className={`terminal-panel ${open ? 'open' : 'collapsed'}`}>
-      <header>
-        <button className="terminal-tab active" onClick={onToggle}>
-          TERMINAL
-        </button>
+      <header
+        className="terminal-panel__toggle"
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+        aria-controls="terminal-console-panel"
+        onClick={onToggle}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            onToggle();
+          }
+        }}
+      >
+        <span className="terminal-tab active">TERMINAL</span>
         <span>local · deterministic</span>
-        <button onClick={onToggle} aria-label={open ? 'Collapse terminal' : 'Expand terminal'}>
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onToggle();
+          }}
+          aria-label={open ? 'Collapse terminal' : 'Expand terminal'}
+        >
           {open ? '⌄' : '⌃'}
         </button>
       </header>
       {open && (
-        <div className="terminal-console" ref={scrollRef}>
+        <div className="terminal-console" ref={scrollRef} id="terminal-console-panel">
           {lines.map((line) => (
             <div className={`terminal-line terminal-line--${line.kind}`} key={line.id}>
               {line.kind === 'command' && <span>julian@portfolio:~$ </span>}
@@ -124,6 +157,8 @@ export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps
               id="terminal-input"
               value={input}
               onChange={(event) => setInput(event.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               autoComplete="off"
               spellCheck={false}
               onKeyDown={(event) => {
@@ -143,6 +178,7 @@ export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps
                 }
               }}
             />
+            <span className={`terminal-cursor ${isFocused ? 'is-active' : ''}`} aria-hidden="true" />
             <button type="submit" aria-label="Run terminal command">
               ↵
             </button>

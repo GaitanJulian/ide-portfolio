@@ -52,9 +52,9 @@ export const fileRegistry: PortfolioFile[] = [
   }),
   file({
     id: 'systems',
-    path: '~/portfolio/systems',
-    filename: 'systems/',
-    kind: 'json',
+    path: '~/portfolio/systems/index.md',
+    filename: 'index.md',
+    kind: 'markdown',
     title: 'Project database',
     category: 'systems',
     summary: 'Index of documented systems.',
@@ -62,10 +62,12 @@ export const fileRegistry: PortfolioFile[] = [
   }),
   ...[
     ['paymentflow', 'paymentflow.md'],
+    ['urban-map-bucaramanga', 'urban-map-bucaramanga.md'],
+    ['incidenthub', 'incidenthub.md'],
+    ['docuflow', 'docuflow.md'],
     ['logistics', 'logistics-data-pipeline.md'],
-    ['incidenthub', 'incidenthub-statusboard.md'],
-    ['meeting-memory', 'meeting-memory-ai.md'],
-    ['b2b', 'b2b-matchmaking-platform.md'],
+    ['statusboard', 'statusboard.md'],
+    ['gameinsider', 'gameinsider.md'],
     ['xr-thesis', 'xr-medical-training-thesis.md'],
   ].map(([id, filename]) =>
     file({
@@ -127,7 +129,7 @@ export const fileRegistry: PortfolioFile[] = [
     kind: 'unity',
     title: 'Interactive portfolio launcher',
     category: 'lab',
-    summary: 'Optional future Unity WebGL launcher.',
+    summary: 'Unity prototype linked externally to avoid loading a heavy runtime here.',
     render: () => <UnityLauncherView />,
   }),
   file({
