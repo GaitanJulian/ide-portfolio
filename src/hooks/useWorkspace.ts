@@ -14,16 +14,16 @@ export function useWorkspace() {
   const closeFile = useCallback(
     (fileId: string) => {
       setOpenFiles((current) => {
-        if (current.length === 1) {
-          setActiveFileId('readme');
-          return ['readme'];
-        }
         const closingIndex = current.indexOf(fileId);
         const next = current.filter((id) => id !== fileId);
 
         if (next.length === 0) {
           setActiveFileId('readme');
-          return ['readme'];
+          window.setTimeout(() => {
+            setOpenFiles(['readme']);
+            setActiveFileId('readme');
+          }, 0);
+          return [];
         }
 
         if (activeFileId === fileId) {
@@ -40,6 +40,7 @@ export function useWorkspace() {
     activeFileId,
     openFile,
     closeFile,
+    setOpenFiles,
     setActiveFileId,
   };
 }

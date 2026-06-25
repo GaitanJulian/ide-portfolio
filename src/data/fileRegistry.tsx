@@ -1,6 +1,6 @@
 import type { PortfolioFile } from '../types';
 import { projectById } from './projects';
-import { ProfileView, ExperienceView, CapabilitiesView, SystemsView } from '../views/StructuredViews';
+import { ProfileViewNext, ExperienceViewNext, CapabilitiesViewNext, SystemsViewNext } from '../views/StructuredViewsNext';
 import { ProjectDetail } from '../views/ProjectDetail';
 import { DecisionsView, DiagramsView, ReliabilityView } from '../views/ArchitectureViews';
 import { UnityExperimentsView, UnityLauncherView, GamePrototypesView } from '../views/LabViews';
@@ -28,7 +28,7 @@ export const fileRegistry: PortfolioFile[] = [
     title: 'Professional profile',
     category: 'root',
     summary: 'Role, location, education and engineering principles.',
-    render: () => <ProfileView />,
+    render: () => <ProfileViewNext />,
   }),
   file({
     id: 'experience',
@@ -38,7 +38,7 @@ export const fileRegistry: PortfolioFile[] = [
     title: 'Experience',
     category: 'root',
     summary: 'Verified work and independent project context.',
-    render: () => <ExperienceView />,
+    render: () => <ExperienceViewNext />,
   }),
   file({
     id: 'capabilities',
@@ -48,7 +48,7 @@ export const fileRegistry: PortfolioFile[] = [
     title: 'Capabilities',
     category: 'root',
     summary: 'Technology groups without arbitrary proficiency percentages.',
-    render: () => <CapabilitiesView />,
+    render: () => <CapabilitiesViewNext />,
   }),
   file({
     id: 'systems',
@@ -58,7 +58,7 @@ export const fileRegistry: PortfolioFile[] = [
     title: 'Project database',
     category: 'systems',
     summary: 'Index of documented systems.',
-    render: () => <SystemsView onOpen={() => undefined} />,
+    render: () => <SystemsViewNext onOpen={() => undefined} />,
   }),
   ...[
     ['paymentflow', 'paymentflow.md'],
@@ -165,3 +165,4 @@ export const fileRegistry: PortfolioFile[] = [
 ];
 
 export const filesById = Object.fromEntries(fileRegistry.map((entry) => [entry.id, entry]));
+export const labFileIds = fileRegistry.filter((entry) => entry.category === 'lab').map((entry) => entry.id);

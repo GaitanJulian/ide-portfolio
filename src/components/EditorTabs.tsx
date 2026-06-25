@@ -33,7 +33,7 @@ export function EditorTabs({ openFiles, activeFileId, onActivate, onClose }: Edi
   }, [openFiles]);
 
   const requestClose = (fileId: string) => {
-    if (openFiles.length === 1 || closingTabs.includes(fileId)) return;
+    if (closingTabs.includes(fileId)) return;
     setClosingTabs((current) => [...current, fileId]);
     window.setTimeout(() => {
       setClosingTabs((current) => current.filter((id) => id !== fileId));
@@ -43,7 +43,7 @@ export function EditorTabs({ openFiles, activeFileId, onActivate, onClose }: Edi
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'w' && openFiles.length > 1) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'w' && openFiles.length > 0) {
         event.preventDefault();
         requestClose(activeFileId);
       }
@@ -83,14 +83,12 @@ export function EditorTabs({ openFiles, activeFileId, onActivate, onClose }: Edi
               tabIndex={active ? 0 : -1}
               onClick={() => onActivate(fileId)}
             >
-              <span>{entry.kind === 'markdown' ? 'M↳' : entry.kind.slice(0, 2).toUpperCase()}</span>
+              <span>{entry.kind === 'markdown' ? 'M->' : entry.kind.slice(0, 2).toUpperCase()}</span>
               <span className="editor-tab__filename">{entry.filename}</span>
             </button>
-            {openFiles.length > 1 && (
-              <button className="tab-close" onClick={() => requestClose(fileId)} aria-label={`Close ${entry.filename}`}>
-                ×
-              </button>
-            )}
+            <button className="tab-close" onClick={() => requestClose(fileId)} aria-label={`Close ${entry.filename}`}>
+              x
+            </button>
           </div>
         );
       })}

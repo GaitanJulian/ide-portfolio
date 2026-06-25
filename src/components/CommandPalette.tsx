@@ -5,9 +5,10 @@ interface CommandPaletteProps {
   open: boolean;
   onClose: () => void;
   onOpenFile: (fileId: string) => void;
+  labUnlocked: boolean;
 }
 
-export function CommandPalette({ open, onClose, onOpenFile }: CommandPaletteProps) {
+export function CommandPalette({ open, onClose, onOpenFile, labUnlocked }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -15,15 +16,16 @@ export function CommandPalette({ open, onClose, onOpenFile }: CommandPaletteProp
   const results = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     const ranked = normalized
-      ? fileRegistry.filter((file) =>
+        ? fileRegistry.filter((file) =>
           [file.filename, file.path, file.title, file.summary, ...(file.tags ?? [])]
             .join(' ')
             .toLowerCase()
             .includes(normalized),
         )
       : fileRegistry;
-    return ranked.slice(0, 9);
-  }, [query]);
+    const visible = ranked.filter((file) => labUnlocked || file.category !== 'lab');
+    return visible.slice(0, 9);
+  }, [labUnlocked, query]);
 
   useEffect(() => {
     if (!open) return;

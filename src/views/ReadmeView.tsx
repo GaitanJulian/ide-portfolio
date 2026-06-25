@@ -8,50 +8,98 @@ interface ReadmeViewProps {
 
 export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
   const featuredProjects = projects.filter((project) => project.featured);
+  const proofCards = [
+    [`${projects.length} Systems Indexed`, 'Workspace inventory'],
+    ['English C1', 'Professional communication'],
+    ['Remote-ready', 'Distributed collaboration'],
+    ['Backend / Data / AI Tooling', 'Core technical focus'],
+    ['AI Navigator Available', 'Portfolio context assistant'],
+  ];
 
   return (
     <div className="document readme-view">
-      <section className="hero">
-        <div className="hero__signal" aria-hidden="true">
-          <span>SYS</span>
-          <i />
-          <span>JG-01</span>
-        </div>
-        <p className="code-comment">// SYSTEM://JULIAN_GAITAN / README.md</p>
-        <p className="hero__kicker">Backend Engineer · Colombia · Remote-ready</p>
-        <h1>
-          Reliable systems,
-          <span> engineered with intent.</span>
-        </h1>
-        <p className="hero__summary">
-          I build reliable backend services, automation pipelines and technical products with clean
-          architecture, strong testing and production-minded engineering.
-        </p>
-        <div className="hero__actions">
-          <button className="primary-button" onClick={() => onOpen('paymentflow')}>
-            Inspect PaymentFlow
-          </button>
-          <button className="secondary-button" onClick={() => onOpen('contact')}>
-            Open contact.sh
-          </button>
-          <button className="secondary-button" onClick={() => onOpen('systems')}>
-            Browse all systems
-          </button>
-        </div>
-      </section>
+      <section className="readme-home-card" aria-label="Julian Gaitan home card">
+        <div className="readme-home-card__grid">
+          <div className="readme-home-card__main">
+            <p className="code-comment">// SYSTEM BOOT: JULIAN_GAITAN</p>
 
-      <section className="fact-grid" aria-label="Profile facts">
-        {[
-          ['Location', 'Colombia'],
-          ['English', 'C1'],
-          ['Focus', 'Backend Engineering'],
-          ['Status', 'Remote-ready'],
-        ].map(([label, value]) => (
-          <div className="fact" key={label}>
-            <span>{label}</span>
-            <strong>{value}</strong>
+            <div className="readme-home-card__identity">
+              <p className="readme-home-card__eyebrow">Backend Engineer</p>
+              <h1>
+                <span>JULIAN</span>
+                <span className="is-accent">GAITAN</span>
+              </h1>
+              <p className="readme-home-card__tagline">
+                Scalable systems / APIs / Data workflows / AI tooling
+              </p>
+            </div>
+
+            <div className="readme-home-card__badges" aria-label="Role badges">
+              {[
+                'Backend Engineer',
+                'Node.js / TypeScript',
+                'Python / Data Workflows',
+                'AI Tooling',
+                'Remote-ready',
+              ].map((badge) => (
+                <span key={badge} className="readme-home-card__badge">
+                  {badge}
+                </span>
+              ))}
+            </div>
+
+            <p className="readme-home-card__summary">
+              I build reliable backend services, automation pipelines and technical products with clean
+              architecture, strong testing and production-minded engineering.
+            </p>
+
+            <div className="readme-home-card__actions">
+              <button className="primary-button" onClick={() => onOpen('systems')}>
+                Browse Systems
+              </button>
+              <button className="secondary-button" onClick={() => onOpen('paymentflow')}>
+                Open PaymentFlow
+              </button>
+              <button className="secondary-button" onClick={() => onOpen('contact')}>
+                Contact
+              </button>
+            </div>
           </div>
-        ))}
+
+          <aside className="readme-home-card__side" aria-label="Profile facts and navigation status">
+            <div className="readme-home-card__facts">
+              {[
+                ['Location', 'Colombia'],
+                ['English', 'C1'],
+                ['Focus', 'Backend Engineering'],
+                ['Status', 'Remote-ready'],
+              ].map(([label, value]) => (
+                <div className="readme-home-card__fact" key={label}>
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                </div>
+              ))}
+            </div>
+
+            <button className="readme-home-card__navigator" onClick={onAskAi}>
+              <span className="status-dot" />
+              <div>
+                <strong>AI Navigator Available</strong>
+                <small>Ask about projects, stack and fit</small>
+              </div>
+              <span aria-hidden="true">→</span>
+            </button>
+          </aside>
+        </div>
+
+        <div className="readme-home-card__proof-grid" aria-label="Proof cards">
+          {proofCards.map(([title, subtitle]) => (
+            <article className="readme-home-card__proof-card" key={title}>
+              <strong>{title}</strong>
+              <span>{subtitle}</span>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="content-section">
@@ -70,14 +118,6 @@ export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
           ))}
         </div>
       </section>
-
-      <button className="ai-invitation" onClick={onAskAi}>
-        <span className="status-dot" />
-        <span>
-          <strong>AI Navigator is ready.</strong> Ask about PaymentFlow or backend projects.
-        </span>
-        <span aria-hidden="true">→</span>
-      </button>
     </div>
   );
 }

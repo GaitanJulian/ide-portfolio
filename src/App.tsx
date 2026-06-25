@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityRail } from './components/ActivityRail';
 import { AiNavigator } from './components/AiNavigator';
 import { CommandPalette } from './components/CommandPalette';
@@ -6,21 +6,56 @@ import { CyberpunkBackground } from './components/CyberpunkBackground';
 import { EditorTabs } from './components/EditorTabs';
 import { FileExplorer } from './components/FileExplorer';
 import { StatusBar } from './components/StatusBar';
-import { TerminalPanel } from './components/TerminalPanel';
+import { TerminalPanelNext } from './components/TerminalPanelNext';
 import { TopBar } from './components/TopBar';
-import { filesById } from './data/fileRegistry';
+import { filesById, labFileIds } from './data/fileRegistry';
 import { useWorkspace } from './hooks/useWorkspace';
+import type { LabState } from './types';
 import { ReadmeView } from './views/ReadmeView';
-import { SystemsView } from './views/StructuredViews';
+import { SystemsViewNext } from './views/StructuredViewsNext';
 
 export default function App() {
   const workspace = useWorkspace();
+  const [labState, setLabState] = useState<LabState>(() => {
+    const unlocked = window.localStorage.getItem('portfolio.labUnlocked') === 'true';
+    return { unlocked, challengePassed: unlocked };
+  });
+  const [labJustUnlocked, setLabJustUnlocked] = useState(false);
+  const previousLabUnlockedRef = useRef(labState.unlocked);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 760);
   const [explorerOpen, setExplorerOpen] = useState(() => window.innerWidth >= 760);
   const [aiOpen, setAiOpen] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [activeOverlay, setActiveOverlay] = useState<'explorer' | 'terminal' | 'ai' | null>(null);
   const [paletteOpen, setPaletteOpen] = useState(false);
+
+  useEffect(() => {
+    window.localStorage.setItem('portfolio.labUnlocked', labState.unlocked ? 'true' : 'false');
+  }, [labState.unlocked]);
+
+  useEffect(() => {
+    if (!labState.unlocked || previousLabUnlockedRef.current === labState.unlocked) return;
+    setLabJustUnlocked(true);
+    const timeoutId = window.setTimeout(() => setLabJustUnlocked(false), 1800);
+    previousLabUnlockedRef.current = labState.unlocked;
+    return () => window.clearTimeout(timeoutId);
+  }, [labState.unlocked]);
+
+  useEffect(() => {
+    if (previousLabUnlockedRef.current !== labState.unlocked) {
+      previousLabUnlockedRef.current = labState.unlocked;
+    }
+  }, [labState.unlocked]);
+
+  useEffect(() => {
+    if (labState.unlocked) return;
+    const nextOpenFiles = workspace.openFiles.filter((fileId) => !labFileIds.includes(fileId));
+    if (nextOpenFiles.length === workspace.openFiles.length) return;
+    workspace.setOpenFiles(nextOpenFiles.length ? nextOpenFiles : []);
+    if (labFileIds.includes(workspace.activeFileId)) {
+      workspace.setActiveFileId('readme');
+    }
+  }, [labState.unlocked, workspace.activeFileId, workspace.openFiles, workspace.setActiveFileId, workspace.setOpenFiles]);
 
   useEffect(() => {
     const onResize = () => {
@@ -61,6 +96,9 @@ export default function App() {
   }, [activeOverlay, isMobile]);
 
   const openFile = (fileId: string) => {
+    if (!labState.unlocked && labFileIds.includes(fileId)) {
+      return;
+    }
     workspace.openFile(fileId);
     if (isMobile) setActiveOverlay(null);
   };
@@ -81,7 +119,7 @@ export default function App() {
       return <ReadmeView onOpen={openFile} onAskAi={() => toggleOverlay('ai')} />;
     }
     if (workspace.activeFileId === 'systems') {
-      return <SystemsView onOpen={openFile} />;
+      return <SystemsViewNext onOpen={openFile} />;
     }
     return activeFile.render();
   };
@@ -110,6 +148,8 @@ export default function App() {
           activeFileId={workspace.activeFileId}
           onOpen={openFile}
           open={isMobile ? activeOverlay === 'explorer' : explorerOpen}
+          labUnlocked={labState.unlocked}
+          labJustUnlocked={labJustUnlocked}
         />
         <main className="editor-workspace">
           <EditorTabs
@@ -128,10 +168,12 @@ export default function App() {
           <div className="editor-pane" id={`editor-panel-${workspace.activeFileId}`} role="tabpanel">
             {renderActiveFile()}
           </div>
-          <TerminalPanel
+          <TerminalPanelNext
             open={isMobile ? activeOverlay === 'terminal' : terminalOpen}
             onToggle={() => toggleOverlay('terminal')}
             onOpenFile={openFile}
+            labState={labState}
+            onLabStateChange={setLabState}
           />
         </main>
         <AiNavigator
@@ -144,7 +186,7 @@ export default function App() {
         )}
       </div>
       <StatusBar activeFileId={workspace.activeFileId} />
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} onOpenFile={openFile} />
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} onOpenFile={openFile} labUnlocked={labState.unlocked} />
     </div>
   );
 }

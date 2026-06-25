@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { fileRegistry, filesById } from '../data/fileRegistry';
+import { fileRegistry, filesById, labFileIds } from '../data/fileRegistry';
 import { projects } from '../data/projects';
-import type { TerminalLine } from '../types';
+import type { LabState, TerminalLine } from '../types';
 
 const aliases: Record<string, string> = {
   paymentflow: 'paymentflow',
@@ -22,15 +22,21 @@ const aliases: Record<string, string> = {
   'profile.yaml': 'profile',
   'experience.log': 'experience',
   'capabilities.json': 'capabilities',
+  'unity-experiments': 'unity-experiments',
+  'interactive-portfolio': 'unity-launcher',
+  'interactive-portfolio.unity': 'unity-launcher',
+  'game-prototypes': 'game-prototypes',
 };
 
 interface TerminalPanelProps {
   open: boolean;
   onToggle: () => void;
   onOpenFile: (fileId: string) => void;
+  labState: LabState;
+  onLabStateChange: (next: LabState) => void;
 }
 
-export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps) {
+export function TerminalPanel({ open, onToggle, onOpenFile, labState, onLabStateChange }: TerminalPanelProps) {
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [lines, setLines] = useState<TerminalLine[]>([
@@ -47,6 +53,8 @@ export function TerminalPanel({ open, onToggle, onOpenFile }: TerminalPanelProps
   const output = (text: string, kind: TerminalLine['kind'] = 'output') => {
     setLines((current) => [...current, { id: Date.now() + current.length, kind, text }]);
   };
+
+  const isLockedLabFile = (fileId: string | undefined) => Boolean(fileId && !labState.unlocked && labFileIds.includes(fileId));
 
   const execute = (raw: string) => {
     const command = raw.trim();

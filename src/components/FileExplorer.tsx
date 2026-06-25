@@ -3,7 +3,7 @@ import { fileRegistry } from '../data/fileRegistry';
 import type { FileCategory, FileKind } from '../types';
 
 const icons: Record<FileKind, string> = {
-  markdown: 'M↳',
+  markdown: 'M->',
   yaml: 'Y',
   log: 'L',
   json: '{}',
@@ -22,9 +22,12 @@ interface FileExplorerProps {
   activeFileId: string;
   onOpen: (fileId: string) => void;
   open: boolean;
+  labUnlocked: boolean;
+  labJustUnlocked: boolean;
 }
 
-export function FileExplorer({ activeFileId, onOpen, open }: FileExplorerProps) {
+export function FileExplorer({ activeFileId, onOpen, open, labUnlocked, labJustUnlocked }: FileExplorerProps) {
+  const [rootExpanded, setRootExpanded] = useState(true);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
     systems: true,
     architecture: true,
@@ -52,31 +55,40 @@ export function FileExplorer({ activeFileId, onOpen, open }: FileExplorerProps) 
       <div className="panel-heading">
         <span>EXPLORER</span>
       </div>
-      <button className="workspace-root" onClick={() => onOpen('readme')}>
-        <span>⌄</span> PORTFOLIO
+      <button
+        className="workspace-root"
+        onClick={() => setRootExpanded((current) => !current)}
+        aria-expanded={rootExpanded}
+        aria-controls="explorer-root-children"
+      >
+        <span>{rootExpanded ? 'v' : '>'}</span> PORTFOLIO
       </button>
-      <div className="explorer-tree">
-        {['readme', 'profile', 'experience', 'capabilities'].map(renderFile)}
-        {groups.map((group) => (
-          <div className="explorer-group" key={group.id}>
-            <button
-              className="folder-row"
-              onClick={() => setExpanded((current) => ({ ...current, [group.id]: !current[group.id] }))}
-            >
-              <span>{expanded[group.id] ? '⌄' : '›'}</span>
-              <span className="folder-icon">◇</span>
-              {group.label}
-            </button>
-            {expanded[group.id] && (
-              <div className="folder-children">
-                {fileRegistry
-                  .filter((entry) => entry.category === group.id)
-                  .map((entry) => renderFile(entry.id))}
+      <div className="explorer-tree" id="explorer-root-children">
+        {rootExpanded && (
+          <>
+            {['readme', 'profile', 'experience', 'capabilities'].map(renderFile)}
+            {groups.filter((group) => group.id !== 'lab' || labUnlocked).map((group) => (
+              <div className="explorer-group" key={group.id}>
+                <button
+                  className={`folder-row ${group.id === 'lab' ? 'folder-row--lab' : ''} ${group.id === 'lab' && labJustUnlocked ? 'folder-row--lab-ping' : ''}`}
+                  onClick={() => setExpanded((current) => ({ ...current, [group.id]: !current[group.id] }))}
+                >
+                  <span>{expanded[group.id] ? 'v' : '>'}</span>
+                  <span className="folder-icon">o</span>
+                  {group.label}
+                </button>
+                {expanded[group.id] && (
+                  <div className="folder-children">
+                    {fileRegistry
+                      .filter((entry) => entry.category === group.id)
+                      .map((entry) => renderFile(entry.id))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
-        {['contact', 'resume'].map(renderFile)}
+            ))}
+            {['contact', 'resume'].map(renderFile)}
+          </>
+        )}
       </div>
       <button className="explorer-ai-card" onClick={() => onOpen('paymentflow')}>
         <span className="status-dot" />
@@ -84,7 +96,7 @@ export function FileExplorer({ activeFileId, onOpen, open }: FileExplorerProps) 
           <strong>Strongest case study</strong>
           PaymentFlow
         </span>
-        <span>↗</span>
+        <span>{'->'}</span>
       </button>
     </aside>
   );

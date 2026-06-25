@@ -40,6 +40,11 @@ export interface TerminalLine {
   text: string;
 }
 
+export interface LabState {
+  unlocked: boolean;
+  challengePassed: boolean;
+}
+
 export interface AiResponse {
   text: string;
   action?: {

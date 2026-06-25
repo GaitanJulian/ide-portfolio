@@ -5,15 +5,13 @@ export function StatusBar({ activeFileId }: { activeFileId: string }) {
   return (
     <footer className="status-bar">
       <div>
-        <span>⑂ main</span>
-        <span>0 errors</span>
-        <span>0 warnings</span>
+        <span>portfolio workspace</span>
+        <span>local content</span>
       </div>
       <div>
         <span>{file.kind.toUpperCase()}</span>
-        <span>UTF-8</span>
-        <span>Ln 1, Col 1</span>
-        <span className="status-ready">● READY</span>
+        <span>{file.category}</span>
+        <span className="status-ready">● REMOTE-READY</span>
       </div>
     </footer>
   );
