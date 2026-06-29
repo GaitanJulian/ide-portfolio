@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { fileRegistry } from '../data/fileRegistry';
+import { visibleFileRegistry } from '../data/fileRegistry';
 import type { FileCategory, FileKind } from '../types';
 
 const icons: Record<FileKind, string> = {
@@ -14,7 +14,6 @@ const icons: Record<FileKind, string> = {
 
 const groups: { id: FileCategory; label: string }[] = [
   { id: 'systems', label: 'systems' },
-  { id: 'architecture', label: 'architecture' },
   { id: 'lab', label: 'lab' },
 ];
 
@@ -30,12 +29,11 @@ export function FileExplorer({ activeFileId, onOpen, open, labUnlocked, labJustU
   const [rootExpanded, setRootExpanded] = useState(true);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
     systems: true,
-    architecture: true,
     lab: false,
   });
 
   const renderFile = (fileId: string) => {
-    const entry = fileRegistry.find((item) => item.id === fileId);
+    const entry = visibleFileRegistry.find((item) => item.id === fileId);
     if (!entry) return null;
     return (
       <button
@@ -79,7 +77,7 @@ export function FileExplorer({ activeFileId, onOpen, open, labUnlocked, labJustU
                 </button>
                 {expanded[group.id] && (
                   <div className="folder-children">
-                    {fileRegistry
+                    {visibleFileRegistry
                       .filter((entry) => entry.category === group.id)
                       .map((entry) => renderFile(entry.id))}
                   </div>

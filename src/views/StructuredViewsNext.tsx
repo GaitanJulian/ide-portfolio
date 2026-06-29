@@ -175,6 +175,24 @@ export function ExperienceViewNext() {
         </section>
 
         <section className="experience-card">
+          <span>INTERNSHIP_2026</span>
+          <h2>Campuslands | Software Engineering Intern</h2>
+          <p>
+            Internship experience supporting internal products, AI initiatives and B2B applications in a fast-moving
+            engineering environment.
+          </p>
+          <ul>
+            <li>Designed, debugged and maintained workflow automations using n8n.</li>
+            <li>Implemented AI agents and chatbots for internal and product-facing workflows.</li>
+            <li>Integrated external services and APIs into operational tools and company systems.</li>
+            <li>Fixed frontend, backend and API issues across multiple existing projects.</li>
+            <li>Reproduced and resolved high-priority bugs through root-cause analysis.</li>
+            <li>Designed and developed a B2B matchmaking platform connecting buyers and sellers.</li>
+            <li>Implemented an automated matching engine powered by n8n workflows.</li>
+          </ul>
+        </section>
+
+        <section className="experience-card">
           <span>PROJECT_CONTEXT</span>
           <h2>Backend Projects, Data Pipelines and Automation Workflows</h2>
           <p>

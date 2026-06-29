@@ -15,6 +15,8 @@ interface ProjectDetailProps {
 
 export function ProjectDetail({ project }: ProjectDetailProps) {
   const isPaymentFlow = project.id === 'paymentflow';
+  const hasArchitectureNotes = Boolean(project.notes?.length);
+  const qualitySignals = project.qualitySignals ?? [];
 
   return (
     <article className="document project-detail">
@@ -99,19 +101,6 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
               <code>FAILED -&gt; retry policy -&gt; provider request</code>
             </div>
           </section>
-          <section className="project-section">
-            <p className="eyebrow">Technical decisions</p>
-            <h2>Designed for explicit behavior</h2>
-            <div className="decision-grid">
-              {paymentDecisions.map(([title, description], index) => (
-                <div className="decision-card" key={title}>
-                  <span>ADR-{String(index + 1).padStart(2, '0')}</span>
-                  <h3>{title}</h3>
-                  <p>{description}</p>
-                </div>
-              ))}
-            </div>
-          </section>
         </>
       ) : (
         <section className="project-section">
@@ -127,6 +116,25 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           </div>
         </section>
       )}
+
+      {hasArchitectureNotes ? (
+        <section className="project-section">
+          <p className="eyebrow">Architecture &amp; decisions</p>
+          <h2>{isPaymentFlow ? 'Designed for explicit behavior' : 'Technical posture inside the case study'}</h2>
+          <div className="decision-grid">
+            {(isPaymentFlow
+              ? paymentDecisions.map(([title, description]) => ({ title, description }))
+              : project.notes ?? []
+            ).map((item, index) => (
+              <div className="decision-card" key={item.title}>
+                <span>ADR-{String(index + 1).padStart(2, '0')}</span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="project-section project-decisions">
         <div>
@@ -146,7 +154,16 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <p className="eyebrow">Testing &amp; quality</p>
           <h2>Engineering posture</h2>
         </div>
-        <p>{project.testing}</p>
+        <div className="quality-section__content">
+          <p>{project.testing}</p>
+          {qualitySignals.length ? (
+            <ul>
+              {qualitySignals.map((signal) => (
+                <li key={signal}>{signal}</li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
       </section>
     </article>
   );

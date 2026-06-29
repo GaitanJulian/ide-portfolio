@@ -19,6 +19,15 @@ export const projects: Project[] = [
       'Sign and verify webhooks',
       'Keep lifecycle changes explicit through state transitions',
     ],
+    notes: [
+      { title: 'Service boundaries', description: 'Auth, order orchestration, payment execution and webhook intake stay isolated so failures and changes remain local.' },
+      { title: 'Order state transitions', description: 'The workflow keeps named states across creation, payment, confirmation and failure paths instead of relying on implicit flags.' },
+      { title: 'Webhook validation', description: 'Incoming provider callbacks are authenticated before touching order state, which keeps external traffic outside trusted paths.' },
+      { title: 'Retry handling', description: 'Recoverable provider failures follow controlled retry paths instead of hidden duplicate execution.' },
+      { title: 'Auth boundaries', description: 'Token-based access is kept in the authenticated edge so payment operations stay protected without mixing concerns.' },
+      { title: 'Testing strategy', description: 'Service behavior, route contracts and transition logic are framed as boundary-level tests instead of only UI checks.' },
+    ],
+    qualitySignals: ['Signed provider inputs', 'Explicit state machine', 'Retry-aware failure paths', 'Boundary-level tests'],
     tradeoffs:
       'Splitting responsibilities across services improves clarity and testability, but adds coordination, secrets management and local orchestration overhead.',
     testing:
@@ -44,6 +53,11 @@ export const projects: Project[] = [
       'Separate public discovery from internal moderation concerns',
       'Use PostGIS for proximity and spatial filtering',
       'Model the system as a modular monolith with bounded contexts',
+    ],
+    notes: [
+      { title: 'Bounded contexts', description: 'Public discovery, organizer authoring, moderation and reporting are kept separate even inside a single deployable codebase.' },
+      { title: 'Role boundaries', description: 'Public visitors, organizers and moderators interact with different capabilities and operational views.' },
+      { title: 'Editorial trust', description: 'Moderation and reporting flows exist to keep discovery quality from collapsing into unreviewed public submissions.' },
     ],
     tradeoffs:
       'A modular monolith keeps delivery and local development simpler than a microservice split, but it requires disciplined boundaries as the product grows.',
@@ -71,6 +85,14 @@ export const projects: Project[] = [
       'Track incidents through explicit status transitions',
       'Generate OpenAPI docs from the backend',
     ],
+    notes: [
+      { title: 'RBAC boundaries', description: 'Protected routes and role checks keep operational actions scoped to the right actors instead of exposing a flat admin surface.' },
+      { title: 'Audit logs', description: 'Incident and service actions are tracked so operational history can be inspected after updates happen.' },
+      { title: 'Service catalog', description: 'Incidents are tied to managed services rather than free-form labels, which makes support context more consistent.' },
+      { title: 'Incident lifecycle', description: 'Status transitions are explicit so triage, progress and closure states remain understandable.' },
+      { title: 'Dashboard visibility', description: 'The paired frontend reflects the API structure instead of hiding backend concepts behind an opaque UI.' },
+    ],
+    qualitySignals: ['JWT-protected routes', 'Role-aware operations', 'Tracked incident history', 'Documented API contracts'],
     tradeoffs:
       'Adding auth, service catalogs and auditability increases complexity, but it makes the project closer to a real operational platform than a simple CRUD demo.',
     testing:
@@ -100,6 +122,11 @@ export const projects: Project[] = [
       'Separate API, broker and worker responsibilities',
       'Use role-based access for admin tooling',
     ],
+    notes: [
+      { title: 'Async boundaries', description: 'Upload handling, queue coordination and document indexing stay separate so slower work does not block request-response paths.' },
+      { title: 'Failure recovery', description: 'Background processing is treated as a recoverable workflow with status visibility instead of a blind fire-and-forget task.' },
+      { title: 'Admin controls', description: 'Analytics and operational views are bounded away from standard user flows through authenticated roles.' },
+    ],
     tradeoffs:
       'Asynchronous workers improve responsiveness and retriability, but they add queue, scheduler and failure-recovery complexity.',
     testing:
@@ -126,6 +153,14 @@ export const projects: Project[] = [
       'Validate records before load',
       'Keep the environment reproducible with Docker',
     ],
+    notes: [
+      { title: 'ETL boundaries', description: 'Ingestion, transformation, validation and warehouse loading are separated into inspectable stages instead of one opaque script.' },
+      { title: 'Data quality checks', description: 'Null, duplicate, range and type validation run before loading so broken operational records do not quietly enter the warehouse.' },
+      { title: 'Upserts and dimensional modeling', description: 'The warehouse is shaped for analytics use cases with repeatable loads instead of append-only raw dumps.' },
+      { title: 'Failure handling', description: 'The batch design favors traceable reruns and explicit stage failures over hidden partial success.' },
+      { title: 'Reproducible runs', description: 'Dockerized setup keeps local execution and reruns consistent across environments.' },
+    ],
+    qualitySignals: ['Validated before load', 'Warehouse-oriented schema', 'Repeatable batch runs', 'Failure visibility by stage'],
     tradeoffs:
       'A batch pipeline is easier to inspect and audit than a streaming design, but it trades away real-time freshness.',
     testing:
@@ -150,6 +185,11 @@ export const projects: Project[] = [
       'Keep the project split into frontend and backend apps',
       'Model incident states explicitly',
       'Use simple persistence to focus on workflow clarity',
+    ],
+    notes: [
+      { title: 'Incident lifecycle', description: 'The project stays centered on explicit report states so triage and updates remain visible in the dashboard.' },
+      { title: 'Dashboard visibility', description: 'Frontend views map directly to backend status operations instead of masking the operational workflow.' },
+      { title: 'Support workflow scope', description: 'The design favors a compact support board over broader enterprise controls such as full audit history or heavier RBAC.' },
     ],
     tradeoffs:
       'The project favors a compact support-flow demo over deeper enterprise controls like full RBAC, audit history and heavier operational tooling.',
@@ -205,6 +245,13 @@ export const projects: Project[] = [
       'Track interactions for session analysis',
       'Separate the Unity client from backend analytics storage',
     ],
+    notes: [
+      { title: 'Interaction tracking', description: 'The simulation captures user actions so sessions can be reviewed as more than a visual prototype.' },
+      { title: 'Session analytics', description: 'Captured data is structured for later analysis rather than treated as disposable runtime telemetry.' },
+      { title: 'Unity and XR architecture', description: 'XR interaction flow stays in the Unity client while analytics storage remains separate to keep responsibilities clear.' },
+      { title: 'Academic prototype context', description: 'This remains a thesis-grade technical prototype, not a claimed production medical platform.' },
+    ],
+    qualitySignals: ['Quest-targeted interaction design', 'Tracked training sessions', 'Separated analytics storage', 'Research-oriented scope'],
     tradeoffs:
       'XR training delivers spatial realism and richer interaction data, but it also raises device-specific design, testing and validation costs.',
     testing:

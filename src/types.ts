@@ -12,6 +12,8 @@ export interface PortfolioFile {
   category: FileCategory;
   summary: string;
   tags?: string[];
+  keywords?: string[];
+  hidden?: boolean;
   render: () => ReactNode;
 }
 
@@ -31,6 +33,8 @@ export interface Project {
   tradeoffs: string;
   testing: string;
   evidence: string;
+  notes?: { title: string; description: string }[];
+  qualitySignals?: string[];
   links?: { label: string; href: string }[];
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { fileRegistry, filesById, labFileIds } from '../data/fileRegistry';
+import { filesById, labFileIds, visibleFileRegistry } from '../data/fileRegistry';
 import { projects } from '../data/projects';
 import type { LabState, TerminalLine } from '../types';
 
@@ -36,6 +36,8 @@ interface TerminalPanelProps {
   onLabStateChange: (next: LabState) => void;
 }
 
+const architectureHint = 'Architecture notes live inside system case studies. Try: open paymentflow';
+
 export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabStateChange }: TerminalPanelProps) {
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -56,6 +58,9 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
 
   const isLockedLabFile = (fileId: string | undefined) => Boolean(fileId && !labState.unlocked && labFileIds.includes(fileId));
 
+  const resolveFileId = (target: string) =>
+    aliases[target] ?? visibleFileRegistry.find((file) => file.filename.toLowerCase() === target)?.id;
+
   const execute = (raw: string) => {
     const command = raw.trim().toLowerCase();
     if (!command) return;
@@ -73,17 +78,19 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
     }
 
     if (verb === 'help') {
-      output('help · pwd · ls · cat <file> · open <file|project> · projects · stack · experience · contact · resume · scan lab · authorize lab · unlock lab · lock lab · clear');
+      output('help | pwd | ls | cat <file> | open <file|project> | projects | stack | experience | contact | resume | scan lab | authorize lab | unlock lab | lock lab | clear');
     } else if (verb === 'pwd') {
       output('/home/julian/portfolio');
     } else if (verb === 'ls') {
-      output(`README.md  profile.yaml  experience.log  capabilities.json  systems/  architecture/  ${labState.unlocked ? 'lab/  ' : ''}contact.sh  resume.pdf`);
+      output(`README.md  profile.yaml  experience.log  capabilities.json  systems/  ${labState.unlocked ? 'lab/  ' : ''}contact.sh  resume.pdf`);
     } else if (verb === 'cat') {
-      const fileId = aliases[target] ?? fileRegistry.find((file) => file.filename.toLowerCase() === target)?.id;
+      const fileId = resolveFileId(target);
       if (fileId === 'readme') {
         output(
           'Julian Gaitan - Backend Engineer, Colombia, remote-ready.\nFocus: reliable backend services, data workflows and production-minded systems.\nFeatured: PaymentFlow, Urban Map Bucaramanga, IncidentHub, DocuFlow and Logistics Data Pipeline.\nUse "open systems" to browse every documented project.',
         );
+      } else if (target === 'architecture') {
+        output(architectureHint);
       } else if (isLockedLabFile(fileId)) {
         output('cat: lab archive is locked. Run: scan lab', 'error');
       } else {
@@ -130,8 +137,10 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
         return;
       }
 
-      const fileId = aliases[target] ?? fileRegistry.find((file) => file.filename.toLowerCase() === target)?.id;
-      if (isLockedLabFile(fileId)) {
+      const fileId = resolveFileId(target);
+      if (target === 'architecture') {
+        output(architectureHint);
+      } else if (isLockedLabFile(fileId)) {
         output(`open: ${target}: lab archive is locked. Run: scan lab`, 'error');
       } else if (fileId) {
         onOpenFile(fileId);
@@ -140,10 +149,10 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
         output(`open: ${target || '<file>'}: not found. Try "projects" or "ls".`, 'error');
       }
     } else if (verb === 'projects') {
-      output(`${projects.map((project) => project.id).join(' · ')} · systems/index\nUse "open systems" to browse the Project Database.`);
+      output(`${projects.map((project) => project.id).join(' | ')} | systems/index\nUse "open systems" to browse the Project Database.`);
     } else if (verb === 'stack') {
       onOpenFile('capabilities');
-      output('Backend · Databases · DevOps · Testing · AI Tooling · Creative Tech');
+      output('Backend | Databases | DevOps | Testing | AI Tooling | Creative Tech');
     } else if (verb === 'experience') {
       onOpenFile('experience');
       output('opened ~/portfolio/experience.log');
@@ -153,6 +162,8 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
     } else if (verb === 'resume') {
       onOpenFile('resume');
       output('resume.pdf not attached yet');
+    } else if (verb === 'architecture') {
+      output(architectureHint);
     } else if (verb === 'lab') {
       if (!labState.unlocked) {
         output('lab: archive is locked. Run: scan lab', 'error');
@@ -183,7 +194,7 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
         }}
       >
         <span className="terminal-tab active">TERMINAL</span>
-        <span>local · deterministic</span>
+        <span>local | deterministic</span>
         <button
           type="button"
           onClick={(event) => {

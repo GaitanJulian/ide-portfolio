@@ -68,6 +68,7 @@ export function EditorTabs({ openFiles, activeFileId, onActivate, onClose }: Edi
       {openFiles.map((fileId) => {
         const entry = filesById[fileId];
         const active = fileId === activeFileId;
+        const icon = entry.kind === 'markdown' ? 'M->' : entry.kind.slice(0, 2).toUpperCase();
         return (
           <div
             className={`editor-tab ${active ? 'active' : ''} ${enteringTabs.includes(fileId) ? 'is-entering' : ''} ${closingTabs.includes(fileId) ? 'is-closing' : ''}`}
@@ -77,16 +78,20 @@ export function EditorTabs({ openFiles, activeFileId, onActivate, onClose }: Edi
             }}
           >
             <button
+              className="editor-tab__trigger"
               role="tab"
               aria-selected={active}
               aria-controls={`editor-panel-${fileId}`}
               tabIndex={active ? 0 : -1}
               onClick={() => onActivate(fileId)}
+              title={entry.filename}
             >
-              <span>{entry.kind === 'markdown' ? 'M->' : entry.kind.slice(0, 2).toUpperCase()}</span>
+              <span className="editor-tab__icon" aria-hidden="true">
+                {icon}
+              </span>
               <span className="editor-tab__filename">{entry.filename}</span>
             </button>
-            <button className="tab-close" onClick={() => requestClose(fileId)} aria-label={`Close ${entry.filename}`}>
+            <button className="tab-close" onClick={() => requestClose(fileId)} aria-label={`Close ${entry.filename}`} title={`Close ${entry.filename}`}>
               x
             </button>
           </div>

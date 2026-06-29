@@ -140,7 +140,6 @@ export default function App() {
           aiOpen={aiOpen}
           onExplorer={() => toggleOverlay('explorer')}
           onSearch={() => setPaletteOpen(true)}
-          onArchitecture={() => openFile('diagrams')}
           onAi={() => toggleOverlay('ai')}
           onContact={() => openFile('contact')}
         />

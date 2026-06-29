@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { fileRegistry } from '../data/fileRegistry';
+import { visibleFileRegistry } from '../data/fileRegistry';
 
 interface CommandPaletteProps {
   open: boolean;
@@ -16,13 +16,13 @@ export function CommandPalette({ open, onClose, onOpenFile, labUnlocked }: Comma
   const results = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     const ranked = normalized
-        ? fileRegistry.filter((file) =>
-          [file.filename, file.path, file.title, file.summary, ...(file.tags ?? [])]
+        ? visibleFileRegistry.filter((file) =>
+          [file.filename, file.path, file.title, file.summary, ...(file.tags ?? []), ...(file.keywords ?? [])]
             .join(' ')
             .toLowerCase()
             .includes(normalized),
         )
-      : fileRegistry;
+      : visibleFileRegistry;
     const visible = ranked.filter((file) => labUnlocked || file.category !== 'lab');
     return visible.slice(0, 9);
   }, [labUnlocked, query]);

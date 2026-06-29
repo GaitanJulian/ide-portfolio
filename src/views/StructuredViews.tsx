@@ -45,6 +45,17 @@ export function ExperienceView() {
           </ul>
         </section>
         <section>
+          <span>INTERNSHIP_2026</span>
+          <h2>Campuslands | Software Engineering Intern</h2>
+          <ul>
+            <li>Supported internal products, AI initiatives and B2B applications.</li>
+            <li>Designed, debugged and maintained n8n workflow automations.</li>
+            <li>Implemented AI agents, chatbots and external API integrations.</li>
+            <li>Fixed frontend, backend and API issues across existing company projects.</li>
+            <li>Built a B2B matchmaking platform with an automated n8n-powered matching engine.</li>
+          </ul>
+        </section>
+        <section>
           <span>PROJECT_CONTEXT</span>
           <h2>Independent Backend Projects</h2>
           <ul>
