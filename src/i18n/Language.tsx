@@ -5,16 +5,16 @@ type Language = 'es' | 'en';
 const LanguageContext = createContext<{
     language: Language;
     setLanguage: (language: Language) => void;
-}>({ language: 'es', setLanguage: () => undefined });
+}>({ language: 'en', setLanguage: () => undefined });
 export function LanguageProvider({ children }: {
     children: ReactNode;
 }) {
     const [language, setLanguage] = useState<Language>(() => {
         try {
-            return localStorage.getItem('portfolio.language') === 'en' ? 'en' : 'es';
+            return localStorage.getItem('portfolio.language') === 'es' ? 'es' : 'en';
         }
         catch {
-            return 'es';
+            return 'en';
         }
     });
     useEffect(() => {

@@ -19,6 +19,15 @@ npm run lint
 npm run build
 ```
 
+## GitHub Pages
+
+The production build uses `/ide-portfolio/` as its base path. In the repository settings,
+select **Pages → Build and deployment → Source → GitHub Actions**. The workflow in
+`.github/workflows/deploy.yml` builds and deploys on pushes to `main`, and can also be
+started from the Actions tab. The expected project site is
+`https://gaitanjulian.github.io/ide-portfolio/`. For a custom domain or a differently
+named repository, update the Vite `base` configuration accordingly.
+
 ## Architecture
 
 - `src/data/fileRegistry.tsx`: single source of truth for portfolio files and content renderers.

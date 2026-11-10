@@ -18,6 +18,9 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
   const isPaymentFlow = project.id === 'paymentflow';
   const hasArchitectureNotes = Boolean(project.notes?.length);
   const qualitySignals = project.qualitySignals ?? [];
+  const repository = project.links?.find((link) => {
+    try { return new URL(link.href).hostname === 'github.com'; } catch { return false; }
+  });
 
   return <Localized><article className="document project-detail">
       <header className="project-hero">
@@ -26,9 +29,16 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <h1>{project.title}</h1>
           <p>{project.description}</p>
         </div>
+        <div className="project-hero__aside">
         <div className="project-hero__meta">
           <span>CASE STUDY</span>
           <strong>{project.id.toUpperCase()}</strong>
+        </div>
+        {repository && <a className="project-hero__repository" href={repository.href} target="_blank" rel="noreferrer">
+          <img src={`${import.meta.env.BASE_URL}icons/tabler/brand-github.svg`} alt="" />
+          <span>Repository</span>
+          <span aria-hidden="true">↗</span>
+        </a>}
         </div>
       </header>
 

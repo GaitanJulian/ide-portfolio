@@ -1,4 +1,5 @@
 import { Localized } from '../i18n/Language';
+import { useState } from 'react';
 const games = [
   {
     title: 'Interactive Portfolio Prototype',
@@ -104,20 +105,19 @@ export function UnityExperimentsView() {
 }
 
 export function UnityLauncherView() {
+  const [started, setStarted] = useState(false);
   return <Localized><div className="document structured-view launcher-view">
-      <span className="launcher-view__badge">ROADMAP · UNAVAILABLE</span>
+      <span className="launcher-view__badge">UNITY · WEBGL</span>
       <h1>interactive-portfolio.unity</h1>
       <p>
-        The Unity portfolio prototype exists as an external experiment rather than an embedded build
-        inside this site.
+        Explore the interactive Unity portfolio directly in your browser.
       </p>
-      <div className="warning-box">
-        <strong>Prototype available outside this page</strong>
-        <span>
-          It is linked from the lab section to avoid loading a large runtime during the main
-          portfolio session.
-        </span>
-      </div>
+      <p>The experience downloads approximately 53 MB and works best on desktop.</p>
+      {started ? (
+        <div className="unity-embed"><iframe src={`${import.meta.env.BASE_URL}interactive-portfolio/index.html`} title="Interactive Unity portfolio" allow="fullscreen; gamepad" allowFullScreen /></div>
+      ) : (
+        <button className="primary-button unity-launch-button" type="button" onClick={() => setStarted(true)}>Launch interactive portfolio</button>
+      )}
       <div className="tag-list tag-list--large">
         <a className="tag" href="https://gaitanjulian.itch.io/interactive-portfolio-prototype" target="_blank" rel="noreferrer">
           Itch.io

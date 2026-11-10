@@ -31,7 +31,7 @@ const contactChannels = [
     id: 'resume',
     label: 'Resume',
     value: 'Resume downloads',
-    href: '/cv/julian-gaitan-es.pdf',
+    href: `${import.meta.env.BASE_URL}cv/julian-gaitan-es.pdf`,
     icon: 'CV',
     actionLabel: 'Resume pending',
     disabled: true,
@@ -116,7 +116,7 @@ export function ContactView() {
                       {channel.actionLabel}
                     </button>
                   )}
-                {channel.id === 'resume' && <a href="/cv/julian-gaitan-en.pdf" download className="contact-card__action">Download resume (EN)</a>}
+                {channel.id === 'resume' && <a href={`${import.meta.env.BASE_URL}cv/julian-gaitan-en.pdf`} download className="contact-card__action">Download resume (EN)</a>}
                 </article>
               ))}
             </div>

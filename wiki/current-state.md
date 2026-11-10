@@ -1,18 +1,22 @@
 # Estado actual
 
-Actualizado: **2026-11-09**, America/Bogota. [Índice](index.md) · [Registro](log.md).
+Actualizado: **2026-11-10**, America/Bogota. [Índice](index.md) · [Registro](log.md).
 
 ## Objetivo y revisión
 
-Rama main, HEAD observado 480b750 (sin commits nuevos). Se conservaron la mejora visual anterior, AGENTS y wiki previamente sin seguimiento. El usuario aportó [el perfil bilingüe](raw/2026-11-09-professional-profile-bilingual.md) y confirmó conservar Lab, retirar GameInsider y añadir ES/EN. Se implementó la actualización de contenido y los CV dentro de ese alcance. Sin commit, push ni publicación.
+La actualización bilingüe y los CV se registraron en el commit `2a68257` y se enviaron a `origin/main`. El usuario aportó [el perfil bilingüe](raw/2026-11-09-professional-profile-bilingual.md) y confirmó conservar Lab, retirar GameInsider y añadir ES/EN.
 
 ## Implementado
 
 - Nombre completo, Bucaramanga, Backend / Full-Stack y disponibilidad inmediata remota; Invisible finalizado en septiembre de 2025, Campuslands con prácticas/contratación de mayo a noviembre de 2026; UIS y grado de marzo de 2026; C1 declarado sin certificación formal.
 - Contenido compartido en [professional.ts](../src/data/professional.ts), siete proyectos en [projects.ts](../src/data/projects.ts), tres destacados. GameInsider retirado de rutas activas; Lab conservado con las mismas reglas/comandos. Capacidades sin puntuaciones.
 - Selector ES/EN visible en desktop/móvil, persistencia local, lang/title/description actualizados. [i18n](../src/i18n/Language.tsx) traduce nodos React mediante diccionario explícito, sin mutación del DOM visible, IDs, hrefs, comandos o valores de formularios.
+- Inglés por defecto para visitas sin preferencia guardada y para el HTML inicial; se conserva la elección previa de español. Cambio local sin commit.
 - [CV español](../public/cv/julian-gaitan-es.pdf) y [CV inglés](../public/cv/julian-gaitan-en.pdf), una página cada uno; descargas conectadas en resume/contacto. Generación reproducible desde los datos del sitio.
 - Dirección visual anterior conservada: Syne/JetBrains Mono, carbón neutro, amarillo/cyan/lila y 13 SVG locales Tabler con MIT.
+- Las fichas con repositorio GitHub muestran un acceso destacado bajo el identificador del caso, con icono y etiqueta traducible; los proyectos sin enlace no lo muestran. Cambio local pendiente de commit.
+- La vista [Interactive Portfolio](../src/views/LabViews.tsx) carga bajo demanda la compilación Unity WebGL local en un iframe, conservando enlaces externos. El canvas ocupa todo el iframe y se oculta el pie blanco de la plantilla, incluido su control de pantalla completa. Los archivos comprimidos ocupan aproximadamente 53 MB. Cambio local sin commit.
+- Preparado el despliegue a GitHub Pages mediante [workflow](../.github/workflows/deploy.yml), con base de producción `/ide-portfolio/` y rutas adaptadas para CV, iconos y Unity. Pendiente subir cambios, activar GitHub Actions como fuente de Pages y verificar el despliegue público.
 
 ## Evidencia actual
 
@@ -24,4 +28,4 @@ Se contrastaron README de PaymentFlow, DocuFlow, IncidentHub, Logistics y Status
 
 ## Continuidad
 
-Actualización completada localmente. Evidencia ignorada en .artifacts/content-update/ y .artifacts/cv/. Los informes visuales anteriores son históricos para su alcance. Falta solo revisión editorial del propietario si desea ampliar los datos omitidos. No hay autorización para publicar o hacer commit. Mantener las dos traducciones y regenerar ambos CV al cambiar el modelo.
+El 2026-11-10 `npm run build` y `node scripts/check-content.cjs` pasaron; se inspeccionaron rutas base generadas y presencia de CV y Unity en `dist`. El workflow y el despliegue público aún no se han ejecutado. En navegador local se observó la pantalla inicial de Unity; no se verificaron la escena final ni sus controles. Debe comprobarse la entrega de archivos comprimidos en el hosting definitivo. Evidencia anterior ignorada en .artifacts/content-update/ y .artifacts/cv/. Mantener las dos traducciones y regenerar ambos CV al cambiar el modelo.

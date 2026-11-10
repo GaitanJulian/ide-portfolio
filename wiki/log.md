@@ -39,3 +39,18 @@ Se contrastaron README actuales de cinco proyectos y esquema SQLite de StatusBoa
 Se generaron dos PDF de una página desde el modelo compartido, renderizados e inspeccionados; descargas reales comprobadas. Nueva matriz de 170 lecturas en 17 vistas, ES/EN y cinco tamaños sin overflow. Scripts de comprobación de contenido y build/lint aprobados; límites en [desarrollo](development.md). Se conservaron cambios locales anteriores, AGENTS y fuentes raw previas. Sin commit, push ni publicación.
 
 Cierre: npm run build, npm run lint y node scripts/check-content.cjs aprobados tras los últimos ajustes. Se confirmó búsqueda curriculum sin tilde, CV con texto extraíble y descargas reales, AI con disponibilidad correcta en ambos idiomas y conservación del input al cambiar idioma. Se repitió bloqueo/rechazo/desbloqueo/apertura/bloqueo del Lab; open gameinsider ya no resuelve y no hay barras numéricas de capacidades. Lab restaurado bloqueado al finalizar.
+## [2026-11-10] desarrollo | Acceso al repositorio en proyectos
+
+Se añadió un enlace destacado con el icono GitHub bajo la tarjeta de caso en las fichas con repositorio. `npm run build` y `node scripts/check-content.cjs` pasaron; no se inspeccionó visualmente en navegador. Cambio local sin commit.
+## [2026-11-10] desarrollo | Integración Unity WebGL
+
+Se incorporó la compilación proporcionada al Lab con carga bajo demanda y enlaces externos conservados. `npm run build` y `node scripts/check-content.cjs` pasaron; en navegador local se observó la pantalla inicial de Unity, sin verificar la escena o controles. Pendiente validar hosting y compresión en producción.
+## [2026-11-10] desarrollo | Inglés predeterminado
+
+El idioma inicial y los metadatos HTML pasan a inglés; la preferencia previamente guardada se conserva. `npm run build` y `node scripts/check-content.cjs` pasaron; no se realizó una nueva prueba de idioma en navegador.
+## [2026-11-10] desarrollo | Pie del iframe Unity
+
+Se ocultó el pie blanco de la plantilla Unity y se amplió el canvas a la altura completa del iframe. El control de pantalla completa de ese pie queda oculto. Cambio local sin commit.
+## [2026-11-10] desarrollo | Preparación de GitHub Pages
+
+Se añadió workflow de build y despliegue, base `/ide-portfolio/` y rutas compatibles para recursos públicos. `npm run build` y `node scripts/check-content.cjs` pasaron; se inspeccionaron las rutas generadas y archivos de salida. Pendiente ejecutar el workflow y verificar el sitio publicado.

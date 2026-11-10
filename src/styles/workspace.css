@@ -331,6 +331,14 @@ a.tag:hover { background: var(--cyan-soft); border-color: var(--cyan); }
 .project-record { background: #222224; }
 .project-record p, .project-decisions p, .project-decisions li, .project-section > p, .quality-section__content p, .quality-section__content li { font-size: 13px; line-height: 1.95; color: #b6b6bf; }
 .project-hero__meta { background: #242426; border-color: #494438; }
+.project-hero__aside { display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+.project-hero__repository { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 12px; border: 1px solid var(--yellow); color: var(--yellow); font: 600 11px var(--mono); text-decoration: none; transition: background .2s, color .2s; }
+.project-hero__repository img { width: 18px; height: 18px; filter: brightness(0) saturate(100%) invert(89%) sepia(78%) saturate(1684%) hue-rotate(357deg); }
+.project-hero__repository:hover, .project-hero__repository:focus-visible { background: rgba(245, 217, 10, .12); }
+.project-hero__repository:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+.unity-launch-button { cursor: pointer; margin: 16px 0 24px; }
+.unity-embed { width: 100%; aspect-ratio: 16 / 9; margin: 24px 0; background: #111; border: 1px solid var(--line); }
+.unity-embed iframe { display: block; width: 100%; height: 100%; border: 0; }
 .decision-card, .reliability-grid article, .architecture-node { background: #232325; }
 .decision-card p, .reliability-grid p { font-size: 12px; line-height: 1.9; color: #b6b6bf; }
 .contact-panel { padding: 0; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
@@ -395,6 +403,7 @@ a.tag:hover { background: var(--cyan-soft); border-color: var(--cyan); }
   .readme-home-card__proof-card { min-height: 96px; }
   .project-grid, .project-grid--all, .profile-layout, .capability-signal-grid, .quality-section, .project-decisions { grid-template-columns: minmax(0,1fr); }
   .project-hero { grid-template-columns: minmax(0,1fr); }
+  .project-hero__aside { justify-self: start; }
   .project-hero__meta { justify-self: start; max-width: 100%; }
   .profile-hero, .project-hero { padding: 0 0 24px; }
   .contact-panel { padding: 0; }
