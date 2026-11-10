@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 import { useState } from 'react';
 import { queryPortfolioContext } from '../services/aiNavigator';
 import type { AiResponse } from '../types';
@@ -27,8 +28,7 @@ export function AiNavigator({ open, onClose, onOpenFile }: AiNavigatorProps) {
     setResponse(queryPortfolioContext(value));
   };
 
-  return (
-    <aside className={`ai-navigator ${open ? 'is-open' : 'is-closed'}`} aria-hidden={!open}>
+  return <Localized><aside className={`ai-navigator ${open ? 'is-open' : 'is-closed'}`} aria-hidden={!open}>
       <header>
         <div>
           <span className="status-dot" />
@@ -87,6 +87,5 @@ export function AiNavigator({ open, onClose, onOpenFile }: AiNavigatorProps) {
           ↑
         </button>
       </form>
-    </aside>
-  );
+    </aside></Localized>;
 }

@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 interface ActivityRailProps {
   explorerOpen: boolean;
   aiOpen: boolean;
@@ -8,8 +9,7 @@ interface ActivityRailProps {
 }
 
 export function ActivityRail({ explorerOpen, aiOpen, onExplorer, onSearch, onAi, onContact }: ActivityRailProps) {
-  return (
-    <nav className="activity-rail" aria-label="Workspace tools">
+  return <Localized><nav className="activity-rail" aria-label="Workspace tools">
       <div>
         <button className={explorerOpen ? 'active' : ''} onClick={onExplorer} aria-label="Explorer">
           EX
@@ -24,6 +24,5 @@ export function ActivityRail({ explorerOpen, aiOpen, onExplorer, onSearch, onAi,
       <button onClick={onContact} aria-label="Contact">
         @
       </button>
-    </nav>
-  );
+    </nav></Localized>;
 }

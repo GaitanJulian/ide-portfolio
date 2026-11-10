@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 import { useEffect, useRef, useState } from 'react';
 import { filesById } from '../data/fileRegistry';
 
@@ -52,8 +53,7 @@ export function EditorTabs({ openFiles, activeFileId, onActivate, onClose }: Edi
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [activeFileId, openFiles.length]);
 
-  return (
-    <div
+  return <Localized><div
       className="editor-tabs"
       role="tablist"
       aria-label="Open files"
@@ -97,6 +97,5 @@ export function EditorTabs({ openFiles, activeFileId, onActivate, onClose }: Edi
           </div>
         );
       })}
-    </div>
-  );
+    </div></Localized>;
 }

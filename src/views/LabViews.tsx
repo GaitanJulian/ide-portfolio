@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 const games = [
   {
     title: 'Interactive Portfolio Prototype',
@@ -73,8 +74,7 @@ const games = [
 ];
 
 export function UnityExperimentsView() {
-  return (
-    <div className="document structured-view lab-view">
+  return <Localized><div className="document structured-view lab-view">
       <p className="code-comment"># lab/unity-experiments.md</p>
       <h1>Unity and XR work, documented as real side projects.</h1>
       <p>
@@ -87,8 +87,8 @@ export function UnityExperimentsView() {
           <span>XR_TRACK</span>
           <h2>Postpartum Hemorrhage XR Simulation</h2>
           <ul>
-            <li>Unity + C# simulator for Meta Quest 3 training scenarios.</li>
-            <li>Designed around mixed-reality interactions, session data capture and analytics.</li>
+            <li>XR academic application for medical training. See the thesis case study for confirmed contributions.</li>
+            <li>Interaction flow, training data capture and Node.js API integration.</li>
           </ul>
         </section>
         <section>
@@ -100,13 +100,11 @@ export function UnityExperimentsView() {
           </ul>
         </section>
       </div>
-    </div>
-  );
+    </div></Localized>;
 }
 
 export function UnityLauncherView() {
-  return (
-    <div className="document structured-view launcher-view">
+  return <Localized><div className="document structured-view launcher-view">
       <span className="launcher-view__badge">ROADMAP · UNAVAILABLE</span>
       <h1>interactive-portfolio.unity</h1>
       <p>
@@ -128,13 +126,11 @@ export function UnityLauncherView() {
           GitHub
         </a>
       </div>
-    </div>
-  );
+    </div></Localized>;
 }
 
 export function GamePrototypesView() {
-  return (
-    <div className="document structured-view lab-view">
+  return <Localized><div className="document structured-view lab-view">
       <p className="code-comment"># lab/game-prototypes.md</p>
       <h1>Prototype archive</h1>
       <p>Selected game projects from the older portfolio, with their current public links.</p>
@@ -161,6 +157,5 @@ export function GamePrototypesView() {
           </section>
         ))}
       </div>
-    </div>
-  );
+    </div></Localized>;
 }

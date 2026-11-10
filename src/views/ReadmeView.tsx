@@ -1,3 +1,5 @@
+import { Localized } from '../i18n/Language';
+import { professional } from '../data/professional';
 import { projects } from '../data/projects';
 import { ProjectCard } from '../components/ProjectCard';
 
@@ -10,35 +12,34 @@ export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
   const featuredProjects = projects.filter((project) => project.featured);
   const proofCards = [
     [`${projects.length} Systems Indexed`, 'Workspace inventory'],
-    ['English C1', 'Professional communication'],
-    ['Remote-ready', 'Distributed collaboration'],
-    ['Backend / Data / AI Tooling', 'Core technical focus'],
+    ['English C1', 'Self-reported · Professional use'],
+    ['Fully remote', 'Available immediately'],
+    ['Backend / Full-stack / AI', 'Core technical focus'],
     ['AI Navigator Available', 'Portfolio context assistant'],
   ];
 
-  return (
-    <div className="document readme-view">
+  return <Localized><div className="document readme-view">
       <section className="readme-home-card" aria-label="Julian Gaitan home card">
         <div className="readme-home-card__grid">
           <div className="readme-home-card__main">
             <p className="code-comment">// SYSTEM BOOT: JULIAN_GAITAN</p>
 
             <div className="readme-home-card__identity">
-              <p className="readme-home-card__eyebrow">Backend Engineer</p>
+              <p className="readme-home-card__eyebrow">Backend / Full-Stack Developer</p>
               <h1>
-                <span>JULIAN</span>
-                <span className="is-accent">GAITAN</span>
+                <span>JULIÁN</span>
+                <span className="is-accent">GAITÁN</span>
               </h1>
               <p className="readme-home-card__tagline">
-                Scalable systems / APIs / Data workflows / AI tooling
+                Web applications / APIs / Integrations / Software quality
               </p>
             </div>
 
             <div className="readme-home-card__badges" aria-label="Role badges">
               {[
-                'Backend Engineer',
+                'Backend / Full-Stack Developer',
                 'Node.js / TypeScript',
-                'Python / Data Workflows',
+                'Vue.js / Node.js',
                 'AI Tooling',
                 'Remote-ready',
               ].map((badge) => (
@@ -49,16 +50,15 @@ export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
             </div>
 
             <p className="readme-home-card__summary">
-              I build reliable backend services, automation pipelines and technical products with clean
-              architecture, strong testing and production-minded engineering.
+              {professional.intro}
             </p>
 
             <div className="readme-home-card__actions">
               <button className="primary-button" onClick={() => onOpen('systems')}>
                 Browse Systems
               </button>
-              <button className="secondary-button" onClick={() => onOpen('paymentflow')}>
-                Open PaymentFlow
+              <button className="secondary-button" onClick={() => onOpen('urban-map-bucaramanga')}>
+                Open Urban Map
               </button>
               <button className="secondary-button" onClick={() => onOpen('contact')}>
                 Contact
@@ -69,10 +69,10 @@ export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
           <aside className="readme-home-card__side" aria-label="Profile facts and navigation status">
             <div className="readme-home-card__facts">
               {[
-                ['Location', 'Colombia'],
-                ['English', 'C1'],
-                ['Focus', 'Backend Engineering'],
-                ['Status', 'Remote-ready'],
+                ['Location', professional.location],
+                ['English', 'C1 · Self-reported'],
+                ['Focus', professional.role],
+                ['Status', professional.availability],
               ].map(([label, value]) => (
                 <div className="readme-home-card__fact" key={label}>
                   <span>{label}</span>
@@ -106,7 +106,7 @@ export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
         <div className="section-heading">
           <div>
             <p className="eyebrow">Featured systems</p>
-            <h2>Case studies built with production-minded practices</h2>
+            <h2>Web applications, backend systems and XR</h2>
           </div>
           <span className="section-index">
             {String(featuredProjects.length).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
@@ -118,6 +118,5 @@ export function ReadmeView({ onOpen, onAskAi }: ReadmeViewProps) {
           ))}
         </div>
       </section>
-    </div>
-  );
+    </div></Localized>;
 }

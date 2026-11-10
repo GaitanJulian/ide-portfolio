@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 export function DecisionsView() {
   const decisions = [
     ['ADR-001', 'Prefer explicit service boundaries', 'Separate responsibilities when they carry different failure modes.'],
@@ -6,8 +7,7 @@ export function DecisionsView() {
     ['ADR-004', 'Keep local AI optional', 'Local tooling should degrade gracefully and never block the core product.'],
   ];
 
-  return (
-    <div className="document structured-view">
+  return <Localized><div className="document structured-view">
       <p className="code-comment">[architecture/decisions.log]</p>
       <div className="decision-list">
         {decisions.map(([id, title, description]) => (
@@ -18,13 +18,11 @@ export function DecisionsView() {
           </article>
         ))}
       </div>
-    </div>
-  );
+    </div></Localized>;
 }
 
 export function DiagramsView() {
-  return (
-    <div className="document structured-view">
+  return <Localized><div className="document structured-view">
       <p className="code-comment"># architecture/diagrams.md</p>
       <h1>System interaction previews</h1>
       <div className="diagram-board">
@@ -55,8 +53,7 @@ export function DiagramsView() {
       <p className="diagram-caption">
         A reusable view of the boundaries shared across the documented backend systems.
       </p>
-    </div>
-  );
+    </div></Localized>;
 }
 
 export function ReliabilityView() {
@@ -67,8 +64,7 @@ export function ReliabilityView() {
     ['Maintainability', 'Small modules, explicit contracts and documented technical decisions.'],
   ];
 
-  return (
-    <div className="document structured-view">
+  return <Localized><div className="document structured-view">
       <p className="code-comment"># architecture/reliability.md</p>
       <h1>Reliability is a design constraint</h1>
       <div className="reliability-grid">
@@ -80,6 +76,5 @@ export function ReliabilityView() {
           </article>
         ))}
       </div>
-    </div>
-  );
+    </div></Localized>;
 }

@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 import type { Project } from '../types';
 
 interface ProjectCardProps {
@@ -7,8 +8,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, onOpen, compact = false }: ProjectCardProps) {
-  return (
-    <article className={`project-card ${compact ? 'project-card--compact' : ''}`}>
+  return <Localized><article className={`project-card ${compact ? 'project-card--compact' : ''}`}>
       <div className="project-card__topline">
         <span>{project.eyebrow}</span>
         <span className="project-card__status">documented</span>
@@ -27,6 +27,5 @@ export function ProjectCard({ project, onOpen, compact = false }: ProjectCardPro
           Open case study <span aria-hidden="true">↗</span>
         </button>
       )}
-    </article>
-  );
+    </article></Localized>;
 }

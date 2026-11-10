@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 import type { Project } from '../types';
 
 const paymentDecisions = [
@@ -18,8 +19,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
   const hasArchitectureNotes = Boolean(project.notes?.length);
   const qualitySignals = project.qualitySignals ?? [];
 
-  return (
-    <article className="document project-detail">
+  return <Localized><article className="document project-detail">
       <header className="project-hero">
         <div>
           <p className="eyebrow">{project.eyebrow}</p>
@@ -46,7 +46,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           ['Status', project.status],
           ['Role', project.role],
           ['Evidence', project.evidence],
-        ].map(([label, value]) => (
+        ].filter(([, value]) => Boolean(value)).map(([label, value]) => (
           <div key={label}>
             <span>{label}</span>
             <p>{value}</p>
@@ -57,7 +57,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
       {project.links?.length ? (
         <section className="project-section">
           <p className="eyebrow">Resources</p>
-          <h2>Verified links</h2>
+          <h2>Resources and links</h2>
           <div className="tag-list tag-list--large">
             {project.links.map((link) => (
               <a className="tag" key={link.href} href={link.href} target="_blank" rel="noreferrer">
@@ -70,10 +70,9 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
 
       <section className="project-section">
         <p className="eyebrow">Overview</p>
-        <h2>What this system explores</h2>
+        <h2>Problem and scope</h2>
         <p>
-          {project.description} The implementation emphasizes clear boundaries, inspectable behavior
-          and a structure that can be tested without relying on presentation-layer assumptions.
+          {project.description}
         </p>
       </section>
 
@@ -165,6 +164,5 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           ) : null}
         </div>
       </section>
-    </article>
-  );
+    </article></Localized>;
 }

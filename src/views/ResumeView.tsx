@@ -1,12 +1,3 @@
-export function ResumeView() {
-  return (
-    <div className="document structured-view launcher-view">
-      <span className="launcher-view__badge">PDF BUFFER</span>
-      <h1>resume.pdf</h1>
-      <div className="warning-box">
-        <strong>resume.pdf not attached yet</strong>
-        <span>The download control will activate when a verified resume file is added to /public.</span>
-      </div>
-    </div>
-  );
-}
+import { Localized } from '../i18n/Language';
+import { professional } from '../data/professional';
+export function ResumeView(){return <Localized><div className="document structured-view"><p className="code-comment"># resume.pdf</p><div className="section-heading"><div><p className="eyebrow">Updated November 2026</p><h1>Choose your resume language</h1></div></div><p>{professional.name}</p><p>Professional background, experience and selected projects.</p><div className="resume-downloads"><article className="project-card"><h2>Spanish resume</h2><p>Español</p><a className="primary-button" href="/cv/julian-gaitan-es.pdf" download>Download PDF</a></article><article className="project-card"><h2>English resume</h2><p>English</p><a className="primary-button" href="/cv/julian-gaitan-en.pdf" download>Download PDF</a></article></div></div></Localized>;}

@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 import { useEffect, useRef, useState } from 'react';
 import { filesById, labFileIds, visibleFileRegistry } from '../data/fileRegistry';
 import { projects } from '../data/projects';
@@ -12,7 +13,6 @@ const aliases: Record<string, string> = {
   statusboard: 'statusboard',
   incidenthub: 'incidenthub',
   docuflow: 'docuflow',
-  gameinsider: 'gameinsider',
   'xr-thesis': 'xr-thesis',
   systems: 'systems',
   projects: 'systems',
@@ -87,7 +87,7 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
       const fileId = resolveFileId(target);
       if (fileId === 'readme') {
         output(
-          'Julian Gaitan - Backend Engineer, Colombia, remote-ready.\nFocus: reliable backend services, data workflows and production-minded systems.\nFeatured: PaymentFlow, Urban Map Bucaramanga, IncidentHub, DocuFlow and Logistics Data Pipeline.\nUse "open systems" to browse every documented project.',
+          'Julián Andrés Gaitán Hernández - Backend / Full-Stack Developer, Bucaramanga, Colombia. Available immediately for fully remote roles.\nExperience: Campuslands, May-November 2026; Invisible, July 2024-September 2025.\nFeatured: Urban Map Bucaramanga, IncidentHub and XR Thesis.\nUse "open systems" to browse every documented project.',
         );
       } else if (target === 'architecture') {
         output(architectureHint);
@@ -152,7 +152,7 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
       output(`${projects.map((project) => project.id).join(' | ')} | systems/index\nUse "open systems" to browse the Project Database.`);
     } else if (verb === 'stack') {
       onOpenFile('capabilities');
-      output('Backend | Databases | DevOps | Testing | AI Tooling | Creative Tech');
+      output('Web development | API integrations | AI evaluation | Software quality | Academic XR');
     } else if (verb === 'experience') {
       onOpenFile('experience');
       output('opened ~/portfolio/experience.log');
@@ -161,7 +161,7 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
       output('executed ./contact.sh');
     } else if (verb === 'resume') {
       onOpenFile('resume');
-      output('resume.pdf not attached yet');
+      output('Resume downloads are available in English and Spanish.');
     } else if (verb === 'architecture') {
       output(architectureHint);
     } else if (verb === 'lab') {
@@ -177,8 +177,7 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
     }
   };
 
-  return (
-    <section className={`terminal-panel ${open ? 'open' : 'collapsed'}`}>
+  return <Localized><section className={`terminal-panel ${open ? 'open' : 'collapsed'}`}>
       <header
         className="terminal-panel__toggle"
         role="button"
@@ -254,6 +253,5 @@ export function TerminalPanelNext({ open, onToggle, onOpenFile, labState, onLabS
           </form>
         </div>
       )}
-    </section>
-  );
+    </section></Localized>;
 }

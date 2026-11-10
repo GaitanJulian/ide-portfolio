@@ -39,7 +39,7 @@ export const fileRegistry: PortfolioFile[] = [
     kind: 'log',
       title: 'Experience',
       category: 'root',
-      summary: 'Verified work and independent project context.',
+      summary: 'Professional experience provided by the portfolio owner.',
       keywords: ['career', 'work'],
       render: () => <ExperienceViewNext />,
     }),
@@ -72,7 +72,6 @@ export const fileRegistry: PortfolioFile[] = [
     ['docuflow', 'docuflow.md'],
     ['logistics', 'logistics-data-pipeline.md'],
     ['statusboard', 'statusboard.md'],
-    ['gameinsider', 'gameinsider.md'],
     ['xr-thesis', 'xr-medical-training-thesis.md'],
   ].map(([id, filename]) =>
     file({
@@ -178,7 +177,7 @@ export const fileRegistry: PortfolioFile[] = [
     kind: 'pdf',
     title: 'Resume',
     category: 'root',
-    summary: 'Resume download placeholder.',
+    summary: 'Download the resume in English or Spanish.',
     render: () => <ResumeView />,
   }),
 ];

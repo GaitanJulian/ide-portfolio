@@ -1,263 +1,150 @@
 import type { Project } from '../types';
-
+import { bilingual as b } from '../i18n/copy';
+import { professional } from './professional';
 export const projects: Project[] = [
-  {
-    id: 'paymentflow',
-    fileId: 'paymentflow',
-    title: 'PaymentFlow',
-    eyebrow: 'Microservices / Payments',
-    description:
-      'Polyglot microservice system where a Node.js order service coordinates with a FastAPI payment provider through signed webhooks, retries and PostgreSQL-backed persistence.',
-    stack: ['Node.js', 'TypeScript', 'Express', 'Prisma', 'PostgreSQL', 'FastAPI', 'Python', 'Docker'],
-    focus: ['JWT authentication', 'Signed webhooks', 'Retry handling', 'Order state machine'],
-    featured: true,
-    context: 'Backend portfolio project built as a multi-service payment workflow.',
-    status: 'Public repository available; documented for local setup with Docker Compose.',
-    role: 'Built the service boundaries, payment lifecycle, auth flow and webhook-based integration between services.',
-    decisions: [
-      'Separate order and payment responsibilities',
-      'Sign and verify webhooks',
-      'Keep lifecycle changes explicit through state transitions',
-    ],
-    notes: [
-      { title: 'Service boundaries', description: 'Auth, order orchestration, payment execution and webhook intake stay isolated so failures and changes remain local.' },
-      { title: 'Order state transitions', description: 'The workflow keeps named states across creation, payment, confirmation and failure paths instead of relying on implicit flags.' },
-      { title: 'Webhook validation', description: 'Incoming provider callbacks are authenticated before touching order state, which keeps external traffic outside trusted paths.' },
-      { title: 'Retry handling', description: 'Recoverable provider failures follow controlled retry paths instead of hidden duplicate execution.' },
-      { title: 'Auth boundaries', description: 'Token-based access is kept in the authenticated edge so payment operations stay protected without mixing concerns.' },
-      { title: 'Testing strategy', description: 'Service behavior, route contracts and transition logic are framed as boundary-level tests instead of only UI checks.' },
-    ],
-    qualitySignals: ['Signed provider inputs', 'Explicit state machine', 'Retry-aware failure paths', 'Boundary-level tests'],
-    tradeoffs:
-      'Splitting responsibilities across services improves clarity and testability, but adds coordination, secrets management and local orchestration overhead.',
-    testing:
-      'The repository documents a testable setup and includes Jest-based testing in the order service, with auth and service behavior called out in the README.',
-    evidence:
-      'Repository documentation, service-specific READMEs and local orchestration instructions are published publicly.',
-    links: [{ label: 'Repository', href: 'https://github.com/GaitanJulian/PaymentFlow' }],
-  },
-  {
-    id: 'urban-map-bucaramanga',
-    fileId: 'urban-map-bucaramanga',
-    title: 'Urban Map Bucaramanga',
-    eyebrow: 'Fullstack Platform / Geo Discovery',
-    description:
-      'Event discovery and moderation platform for Bucaramanga with a public map, organizer authoring flows, editorial moderation and role-based operational workspaces.',
-    stack: ['Node.js', 'NestJS', 'React', 'TypeScript', 'PostgreSQL', 'PostGIS', 'TypeORM', 'Leaflet'],
-    featured: true,
-    focus: ['Interactive map discovery', 'Role-based authentication', 'Moderation workflows', 'Geospatial queries'],
-    context: 'Fullstack city-events platform with operational trust and location-aware discovery.',
-    status: 'Public repository available; implemented locally with seeded demo data, auth roles and modular workspaces.',
-    role: 'Built the platform architecture, public discovery experience, organizer publication flow and moderation/reporting operations.',
-    decisions: [
-      'Separate public discovery from internal moderation concerns',
-      'Use PostGIS for proximity and spatial filtering',
-      'Model the system as a modular monolith with bounded contexts',
-    ],
-    notes: [
-      { title: 'Bounded contexts', description: 'Public discovery, organizer authoring, moderation and reporting are kept separate even inside a single deployable codebase.' },
-      { title: 'Role boundaries', description: 'Public visitors, organizers and moderators interact with different capabilities and operational views.' },
-      { title: 'Editorial trust', description: 'Moderation and reporting flows exist to keep discovery quality from collapsing into unreviewed public submissions.' },
-    ],
-    tradeoffs:
-      'A modular monolith keeps delivery and local development simpler than a microservice split, but it requires disciplined boundaries as the product grows.',
-    testing:
-      'The README documents seeded demo flows, operational slices and architecture clearly, but it also states that automated tests and linting are still pending.',
-    evidence:
-      'The public README documents the bounded contexts, seeded demo users, release slices, auth model and local runbook for both API and web.',
-    links: [{ label: 'Repository', href: 'https://github.com/GaitanJulian/urban-map-bucaramanga' }],
-  },
-  {
-    id: 'incidenthub',
-    fileId: 'incidenthub',
-    title: 'IncidentHub',
-    eyebrow: 'Backend API / Incident Management',
-    description:
-      'RESTful incident-management platform with JWT auth, role-based access, audit logs, service catalog support and a paired dashboard frontend.',
-    stack: ['Node.js', 'TypeScript', 'Express', 'Prisma', 'PostgreSQL', 'Docker', 'React'],
-    focus: ['JWT authentication', 'RBAC', 'Audit logs', 'Service management'],
-    featured: true,
-    context: 'Backend-first platform project for internal incidents and support operations.',
-    status: 'Public repository and live deployments are available.',
-    role: 'Built the API modules, authorization model, service-management flows and deployment-ready backend structure.',
-    decisions: [
-      'Protect routes with JWT and roles',
-      'Track incidents through explicit status transitions',
-      'Generate OpenAPI docs from the backend',
-    ],
-    notes: [
-      { title: 'RBAC boundaries', description: 'Protected routes and role checks keep operational actions scoped to the right actors instead of exposing a flat admin surface.' },
-      { title: 'Audit logs', description: 'Incident and service actions are tracked so operational history can be inspected after updates happen.' },
-      { title: 'Service catalog', description: 'Incidents are tied to managed services rather than free-form labels, which makes support context more consistent.' },
-      { title: 'Incident lifecycle', description: 'Status transitions are explicit so triage, progress and closure states remain understandable.' },
-      { title: 'Dashboard visibility', description: 'The paired frontend reflects the API structure instead of hiding backend concepts behind an opaque UI.' },
-    ],
-    qualitySignals: ['JWT-protected routes', 'Role-aware operations', 'Tracked incident history', 'Documented API contracts'],
-    tradeoffs:
-      'Adding auth, service catalogs and auditability increases complexity, but it makes the project closer to a real operational platform than a simple CRUD demo.',
-    testing:
-      'The repository documents test execution, modular routing, validation and operational middleware, with the emphasis on a production-style backend structure.',
-    evidence: 'Public repository, deployed API, frontend dashboard and documented endpoints are available.',
-    links: [
-      { label: 'Repository', href: 'https://github.com/GaitanJulian/IncidentHub' },
-      { label: 'API', href: 'https://incidenthub-kxjp.onrender.com' },
-      { label: 'Frontend', href: 'https://incident-89vl06psn-julians-projects-389143e1.vercel.app' },
-    ],
-  },
-  {
-    id: 'docuflow',
-    fileId: 'docuflow',
-    title: 'DocuFlow',
-    eyebrow: 'FastAPI / Async Processing',
-    description:
-      'Document indexing backend with authenticated uploads, asynchronous processing through Celery and Redis, PostgreSQL metadata and admin-level analytics.',
-    stack: ['Python', 'FastAPI', 'PostgreSQL', 'SQLAlchemy', 'Celery', 'Redis', 'Docker'],
-    focus: ['File uploads', 'Async indexing', 'JWT auth', 'Admin analytics'],
-    featured: true,
-    context: 'Backend systems project focused on background jobs and document workflows.',
-    status: 'Public repository available; designed to run locally or through Docker Compose.',
-    role: 'Built the API, auth, upload flow, asynchronous worker orchestration and admin operations.',
-    decisions: [
-      'Push indexing into background workers',
-      'Separate API, broker and worker responsibilities',
-      'Use role-based access for admin tooling',
-    ],
-    notes: [
-      { title: 'Async boundaries', description: 'Upload handling, queue coordination and document indexing stay separate so slower work does not block request-response paths.' },
-      { title: 'Failure recovery', description: 'Background processing is treated as a recoverable workflow with status visibility instead of a blind fire-and-forget task.' },
-      { title: 'Admin controls', description: 'Analytics and operational views are bounded away from standard user flows through authenticated roles.' },
-    ],
-    tradeoffs:
-      'Asynchronous workers improve responsiveness and retriability, but they add queue, scheduler and failure-recovery complexity.',
-    testing:
-      'The repository documents test execution with Pytest inside Docker and treats retries plus status tracking as part of the quality posture.',
-    evidence:
-      'The public README documents the API surface, environment variables, Docker setup and Celery-based architecture.',
-    links: [{ label: 'Repository', href: 'https://github.com/GaitanJulian/DocuFlow' }],
-  },
-  {
-    id: 'logistics',
-    fileId: 'logistics',
-    title: 'Logistics Data Pipeline',
-    eyebrow: 'Data Engineering / ETL',
-    description:
-      'Production-style ETL pipeline for logistics operations with ingestion, transformation, validation and loading into a PostgreSQL warehouse.',
-    stack: ['Python', 'PostgreSQL', 'SQLAlchemy', 'Pandas', 'Docker'],
-    focus: ['Data ingestion', 'Validation rules', 'Dimensional modeling', 'Incremental loading'],
-    featured: true,
-    context: 'Data pipeline portfolio project centered on reliable operational analytics.',
-    status: 'Public repository available; positioned as a production-style ETL case study.',
-    role: 'Built the ingestion flow, transformation steps, data-quality rules and warehouse loading strategy.',
-    decisions: [
-      'Model the warehouse for analytics use cases',
-      'Validate records before load',
-      'Keep the environment reproducible with Docker',
-    ],
-    notes: [
-      { title: 'ETL boundaries', description: 'Ingestion, transformation, validation and warehouse loading are separated into inspectable stages instead of one opaque script.' },
-      { title: 'Data quality checks', description: 'Null, duplicate, range and type validation run before loading so broken operational records do not quietly enter the warehouse.' },
-      { title: 'Upserts and dimensional modeling', description: 'The warehouse is shaped for analytics use cases with repeatable loads instead of append-only raw dumps.' },
-      { title: 'Failure handling', description: 'The batch design favors traceable reruns and explicit stage failures over hidden partial success.' },
-      { title: 'Reproducible runs', description: 'Dockerized setup keeps local execution and reruns consistent across environments.' },
-    ],
-    qualitySignals: ['Validated before load', 'Warehouse-oriented schema', 'Repeatable batch runs', 'Failure visibility by stage'],
-    tradeoffs:
-      'A batch pipeline is easier to inspect and audit than a streaming design, but it trades away real-time freshness.',
-    testing:
-      'Validation rules for nulls, duplicates, ranges and types are part of the pipeline design; the README frames those checks as a core quality mechanism.',
-    evidence:
-      'The public README documents the ETL stages, validation scope and analytics-oriented warehouse design.',
-    links: [{ label: 'Repository', href: 'https://github.com/GaitanJulian/Logistic-data-pipeline' }],
-  },
-  {
-    id: 'statusboard',
-    fileId: 'statusboard',
-    title: 'StatusBoard',
-    eyebrow: 'Fullstack / Support Workflow',
-    description:
-      'Fullstack incident and production-support dashboard that simulates Level 3 support workflows with a React frontend and a TypeScript backend.',
-    stack: ['Node.js', 'TypeScript', 'Express', 'React', 'Prisma', 'SQLite'],
-    focus: ['Incident reporting', 'Status workflows', 'Dashboard UI', 'API-driven frontend'],
-    context: 'Support-oriented fullstack demo built to represent incident triage and status tracking.',
-    status: 'Public repository available, with frontend and backend deployments linked from the older portfolio.',
-    role: 'Built the API-driven incident workflow and the dashboard used to create, list and update reports.',
-    decisions: [
-      'Keep the project split into frontend and backend apps',
-      'Model incident states explicitly',
-      'Use simple persistence to focus on workflow clarity',
-    ],
-    notes: [
-      { title: 'Incident lifecycle', description: 'The project stays centered on explicit report states so triage and updates remain visible in the dashboard.' },
-      { title: 'Dashboard visibility', description: 'Frontend views map directly to backend status operations instead of masking the operational workflow.' },
-      { title: 'Support workflow scope', description: 'The design favors a compact support board over broader enterprise controls such as full audit history or heavier RBAC.' },
-    ],
-    tradeoffs:
-      'The project favors a compact support-flow demo over deeper enterprise controls like full RBAC, audit history and heavier operational tooling.',
-    testing:
-      'The repository emphasizes architecture and end-to-end flow over formal automated test coverage, and lists future improvements around deeper backend hardening.',
-    evidence: 'README documentation, repository structure and deployed frontend links are publicly available.',
-    links: [
-      { label: 'Repository', href: 'https://github.com/GaitanJulian/StatusBoard' },
-      { label: 'Live demo', href: 'https://status-board-dxljzosd7-julians-projects-389143e1.vercel.app' },
-    ],
-  },
-  {
-    id: 'gameinsider',
-    fileId: 'gameinsider',
-    title: 'GameInsider',
-    eyebrow: 'Django / Community Platform',
-    description:
-      'Forum-style web platform for video game discussions where users create posts, search content, comment, like publications and manage their profiles.',
-    stack: ['Python', 'Django', 'SQLite', 'Bootstrap', 'JavaScript', 'HTML', 'CSS'],
-    focus: ['Authentication', 'Posts and comments', 'Search', 'Profile management'],
-    context: 'Earlier fullstack web project built around Django and server-rendered pages.',
-    status: 'Public repository and video demo available.',
-    role: 'Built the Django application structure, models, templates and views for posts, comments, likes and user profiles.',
-    decisions: [
-      'Use Django server-rendered templates',
-      'Model social interactions directly in the database',
-      'Keep profile and publishing flows inside the same app',
-    ],
-    tradeoffs:
-      'A monolithic Django app speeds up feature delivery for a forum product, but it is less modular than later API-first projects.',
-    testing:
-      'The repository README focuses on model, template and view structure rather than automated test coverage.',
-    evidence: 'A public repository and linked video demo document the full feature set and application structure.',
-    links: [
-      { label: 'Repository', href: 'https://github.com/GaitanJulian/GameInsiderDjango' },
-      { label: 'Video demo', href: 'https://youtu.be/fmIaGJ3BC2Y' },
-    ],
-  },
-  {
-    id: 'xr-thesis',
-    fileId: 'xr-thesis',
-    title: 'XR Medical Training Thesis',
-    eyebrow: 'Mixed Reality / Research',
-    description:
-      'Mixed reality postpartum hemorrhage training simulator for Meta Quest 3 with interaction tracking and session analytics.',
-    stack: ['Unity', 'C#', 'Meta Quest 3', 'Node.js', 'MongoDB'],
-    focus: ['Clinical simulation', 'Interaction tracking', 'Session analytics', 'Mixed reality'],
-    context: 'Academic thesis project focused on healthcare training in XR.',
-    status: 'Thesis project with screenshots documented in the older portfolio; no public runtime is attached here.',
-    role: 'Built the Unity simulation, XR interaction flow and session data capture used for training analysis.',
-    decisions: [
-      'Target Meta Quest 3',
-      'Track interactions for session analysis',
-      'Separate the Unity client from backend analytics storage',
-    ],
-    notes: [
-      { title: 'Interaction tracking', description: 'The simulation captures user actions so sessions can be reviewed as more than a visual prototype.' },
-      { title: 'Session analytics', description: 'Captured data is structured for later analysis rather than treated as disposable runtime telemetry.' },
-      { title: 'Unity and XR architecture', description: 'XR interaction flow stays in the Unity client while analytics storage remains separate to keep responsibilities clear.' },
-      { title: 'Academic prototype context', description: 'This remains a thesis-grade technical prototype, not a claimed production medical platform.' },
-    ],
-    qualitySignals: ['Quest-targeted interaction design', 'Tracked training sessions', 'Separated analytics storage', 'Research-oriented scope'],
-    tradeoffs:
-      'XR training delivers spatial realism and richer interaction data, but it also raises device-specific design, testing and validation costs.',
-    testing:
-      'The portfolio documents the technical direction and screenshots, but it does not include a downloadable build or formal evaluation results.',
-    evidence: 'The older portfolio includes screenshots and a technical summary of the training simulator.',
-  },
+    {
+        id: "urban-map-bucaramanga",
+        fileId: "urban-map-bucaramanga",
+        title: "Urban Map Bucaramanga",
+        stack: ["React", "TypeScript", "NestJS", "TypeORM", "PostgreSQL", "PostGIS", "Leaflet", "Better Auth"],
+        featured: true,
+        eyebrow: b("Events / Full-stack", "Eventos / Full-stack"),
+        description: b("Event discovery platform for Bucaramanga with a public map, proximity filters, organizer publishing, editorial moderation and role-based access.", "Plataforma de eventos de Bucaramanga con mapa público, filtros de proximidad, publicación para organizadores, moderación editorial y acceso por roles."),
+        context: b("Portfolio project; current scope completed and runnable locally.", "Proyecto de portafolio; alcance actual finalizado y ejecutable en local."),
+        status: b("Local demo with seed data. No documented production deployment.", "Demo local con datos de ejemplo. Sin despliegue productivo documentado."),
+        role: '',
+        focus: [b("Separate the approved-event public model from publishing and moderation workflows.", "Separar el modelo público de eventos aprobados de los flujos de publicación y moderación.")],
+        decisions: [b("Separate the approved-event public model from publishing and moderation workflows.", "Separar el modelo público de eventos aprobados de los flujos de publicación y moderación.")],
+        tradeoffs: b("A modular monolith simplifies local operation while requiring clear boundaries between domains.", "Un monolito modular simplifica la operación local y requiere límites claros entre dominios."),
+        testing: b("Demo flows and seeds are documented. Automated tests, lint, CI/CD and production deployment are not documented as implemented.", "Se documentan flujos de demo y datos de ejemplo. No se documentan pruebas automatizadas, lint, CI/CD o despliegue productivo implementados."),
+        evidence: b("Public repository documentation.", "Documentación pública del repositorio."),
+        links: [{
+                label: 'Repository',
+                href: "https://github.com/GaitanJulian/urban-map-bucaramanga"
+            }]
+    },
+    {
+        id: "incidenthub",
+        fileId: "incidenthub",
+        title: "IncidentHub",
+        stack: ["Node.js", "TypeScript", "Express", "Prisma", "PostgreSQL", "Docker", "React"],
+        featured: true,
+        eyebrow: b("Backend / Incident management", "Backend / Gestión de incidentes"),
+        description: b("Incident-management API and dashboard with JWT authentication, roles, service management, comments, filtering and audit-oriented middleware.", "API y dashboard de gestión de incidentes con autenticación JWT, roles, gestión de servicios, comentarios, filtros y middleware orientado a auditoría."),
+        context: b("Portfolio project for support, IT operations and service-management workflows.", "Proyecto de portafolio para soporte, operaciones TI y gestión de servicios."),
+        status: b("Public repository. Deployment URLs are documented; current service availability has not been verified.", "Repositorio público. Hay URLs de despliegue documentadas; no se ha verificado la disponibilidad actual del servicio."),
+        role: '',
+        focus: [b("Scope incident and service operations through authenticated roles.", "Delimitar las operaciones de incidentes y servicios mediante roles autenticados.")],
+        decisions: [b("Scope incident and service operations through authenticated roles.", "Delimitar las operaciones de incidentes y servicios mediante roles autenticados.")],
+        tradeoffs: b("Roles and operational context add complexity compared with a small incident board.", "Los roles y el contexto operativo añaden complejidad frente a un tablero de incidentes sencillo."),
+        testing: b("README documents a test command and OpenAPI endpoints. Tests were not executed as part of this portfolio review.", "El README documenta un comando de pruebas y endpoints OpenAPI. Las pruebas no se ejecutaron durante esta revisión del portafolio."),
+        evidence: b("Public repository documentation.", "Documentación pública del repositorio."),
+        links: [{
+                label: 'Repository',
+                href: "https://github.com/GaitanJulian/IncidentHub"
+            }]
+    },
+    {
+        id: "xr-thesis",
+        fileId: "xr-thesis",
+        title: "XR Medical Training Thesis",
+        stack: ["Unity", "C#", "Node.js"],
+        featured: true,
+        eyebrow: b("XR / Academic thesis", "XR / Tesis de grado"),
+        description: b("XR application for training medical interns in the postpartum hemorrhage procedure, including interaction flow, training data capture and API integration.", "Aplicación XR para entrenar a internos de medicina en el procedimiento de hemorragia postparto, con flujo de interacción, captura de datos e integración API."),
+        context: b("Systems and Computer Engineering degree project, Universidad Industrial de Santander. Graduated March 2026.", "Proyecto de grado de Ingeniería de Sistemas e Informática, Universidad Industrial de Santander. Grado en marzo de 2026."),
+        status: b("Academic project. No public build or formal user-evaluation results are attached.", "Proyecto académico. No se adjunta build público ni resultados de una evaluación formal con usuarios."),
+        role: professional.thesisContribution,
+        focus: [b("Integrate the XR training flow with the broader student application through an API.", "Integrar el flujo de entrenamiento XR con la aplicación general de estudiantes mediante una API.")],
+        decisions: [b("Integrate the XR training flow with the broader student application through an API.", "Integrar el flujo de entrenamiento XR con la aplicación general de estudiantes mediante una API.")],
+        tradeoffs: b("The application combines interactive training with data exchange; device details and user evaluation are not claimed.", "La aplicación combina entrenamiento interactivo e intercambio de datos; no se afirman detalles de hardware o evaluación con usuarios."),
+        testing: b("No formal evaluation results or automated-test coverage have been supplied.", "No se han aportado resultados de evaluación formal ni cobertura de pruebas automatizadas."),
+        evidence: b("Degree and personal contribution provided by the portfolio owner.", "Título y aportación personal aportados por el propietario del portafolio."),
+        links: []
+    },
+    {
+        id: "paymentflow",
+        fileId: "paymentflow",
+        title: "PaymentFlow",
+        stack: ["Node.js", "TypeScript", "Express", "Prisma", "PostgreSQL", "Python", "FastAPI", "Docker"],
+        featured: false,
+        eyebrow: b("Microservices / Payments", "Microservicios / Pagos"),
+        description: b("Portfolio payment simulation with a Node.js order service and a FastAPI payment provider, signed webhooks, explicit states, retries and PostgreSQL persistence.", "Simulación de pagos de portafolio con servicio de órdenes Node.js y proveedor FastAPI, webhooks firmados, estados explícitos, reintentos y persistencia PostgreSQL."),
+        context: b("Backend portfolio project with separate order and payment services.", "Proyecto backend de portafolio con servicios separados de órdenes y pagos."),
+        status: b("Public repository with a documented local Docker Compose setup.", "Repositorio público con configuración local documentada de Docker Compose."),
+        role: '',
+        focus: [b("Separate order processing from payment simulation and authenticate callbacks.", "Separar las órdenes de la simulación de pagos y autenticar los callbacks.")],
+        decisions: [b("Separate order processing from payment simulation and authenticate callbacks.", "Separar las órdenes de la simulación de pagos y autenticar los callbacks.")],
+        tradeoffs: b("Service separation makes responsibilities explicit but adds coordination and local orchestration.", "La separación de servicios hace explícitas sus responsabilidades, pero añade coordinación y orquestación local."),
+        testing: b("README describes Jest tests for authentication and signed webhook workflows. Test execution and coverage were not independently verified.", "El README describe pruebas Jest para autenticación y flujos de webhooks firmados. No se verificaron de forma independiente su ejecución o cobertura."),
+        evidence: b("Public repository documentation.", "Documentación pública del repositorio."),
+        links: [{
+                label: 'Repository',
+                href: "https://github.com/GaitanJulian/PaymentFlow"
+            }]
+    },
+    {
+        id: "docuflow",
+        fileId: "docuflow",
+        title: "DocuFlow",
+        stack: ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Celery", "Redis", "Docker"],
+        featured: false,
+        eyebrow: b("Backend / Async documents", "Backend / Documentos asíncronos"),
+        description: b("Document backend with JWT authentication, uploads, PostgreSQL metadata, simulated asynchronous indexing through Celery/Redis, retries and administrator analytics.", "Backend documental con autenticación JWT, cargas, metadatos PostgreSQL, indexación asíncrona simulada mediante Celery/Redis, reintentos y analítica administrativa."),
+        context: b("Portfolio/demo project. Indexing is simulated, as stated in the repository.", "Proyecto de portafolio y demo. La indexación es simulada, como indica el repositorio."),
+        status: b("Public repository with Docker Compose instructions. No production deployment is claimed.", "Repositorio público con instrucciones de Docker Compose. No se afirma un despliegue productivo."),
+        role: '',
+        focus: [b("Move simulated indexing to background workers and track failed documents for retries.", "Ejecutar la indexación simulada en workers y registrar documentos fallidos para reintentos.")],
+        decisions: [b("Move simulated indexing to background workers and track failed documents for retries.", "Ejecutar la indexación simulada en workers y registrar documentos fallidos para reintentos.")],
+        tradeoffs: b("Background processing separates slow work from API requests while adding queue and worker operation.", "El procesamiento en segundo plano separa el trabajo lento de la API y añade operación de colas y workers."),
+        testing: b("README documents a Docker-based Pytest command. Tests were not executed during this review.", "El README documenta un comando Pytest mediante Docker. Las pruebas no se ejecutaron durante esta revisión."),
+        evidence: b("Public repository documentation.", "Documentación pública del repositorio."),
+        links: [{
+                label: 'Repository',
+                href: "https://github.com/GaitanJulian/DocuFlow"
+            }]
+    },
+    {
+        id: "logistics",
+        fileId: "logistics",
+        title: "Logistics Data Pipeline",
+        stack: ["Python", "Pandas", "SQLAlchemy", "PostgreSQL", "Docker"],
+        featured: false,
+        eyebrow: b("Data engineering / ETL", "Ingeniería de datos / ETL"),
+        description: b("ETL simulation of logistics shipments with ingestion, transformation, data-quality checks, incremental upserts and a dimensional PostgreSQL warehouse.", "Simulación ETL de envíos logísticos con ingesta, transformación, controles de calidad, upserts incrementales y almacén dimensional PostgreSQL."),
+        context: b("Portfolio project using simulated logistics operations.", "Proyecto de portafolio con operaciones logísticas simuladas."),
+        status: b("Public repository and reproducible environment documented.", "Repositorio público y entorno reproducible documentado."),
+        role: '',
+        focus: [b("Validate data before warehouse loading and use incremental upserts for traceability.", "Validar los datos antes de cargarlos y usar upserts incrementales para su trazabilidad.")],
+        decisions: [b("Validate data before warehouse loading and use incremental upserts for traceability.", "Validar los datos antes de cargarlos y usar upserts incrementales para su trazabilidad.")],
+        tradeoffs: b("Validation and auditability add processing steps while improving the inspectability of analytical data.", "La validación y la trazabilidad añaden pasos y permiten inspeccionar mejor los datos analíticos."),
+        testing: b("README describes validation rules and logging. No measured production outcomes or test coverage are claimed.", "El README describe reglas de validación y logging. No se afirman resultados productivos medidos o cobertura de pruebas."),
+        evidence: b("Public repository documentation.", "Documentación pública del repositorio."),
+        links: [{
+                label: 'Repository',
+                href: "https://github.com/GaitanJulian/Logistic-data-pipeline"
+            }]
+    },
+    {
+        id: "statusboard",
+        fileId: "statusboard",
+        title: "StatusBoard",
+        stack: ["Node.js", "TypeScript", "Express", "React", "Prisma", "SQLite"],
+        featured: false,
+        eyebrow: b("Full-stack / Support demo", "Full-stack / Demo de soporte"),
+        description: b("Compact incident-reporting dashboard with a React frontend, Express API, status updates and Prisma/SQLite persistence.", "Dashboard compacto de reportes de incidentes con frontend React, API Express, cambios de estado y persistencia Prisma/SQLite."),
+        context: b("Portfolio support-workflow demo; narrower in scope than IncidentHub.", "Demo de flujos de soporte; alcance más acotado que IncidentHub."),
+        status: b("Public repository. SQLite is confirmed by the Prisma schema; PostgreSQL is a roadmap item.", "Repositorio público. El esquema Prisma confirma SQLite; PostgreSQL figura como mejora futura."),
+        role: '',
+        focus: [b("Keep incident creation and state updates in a compact API-driven workflow.", "Mantener la creación y actualización de incidentes en un flujo compacto basado en API.")],
+        decisions: [b("Keep incident creation and state updates in a compact API-driven workflow.", "Mantener la creación y actualización de incidentes en un flujo compacto basado en API.")],
+        tradeoffs: b("A focused board is simpler to operate than IncidentHub, which documents broader service management and JWT/RBAC.", "Un tablero enfocado es más sencillo que IncidentHub, que documenta gestión de servicios y JWT/RBAC más amplios."),
+        testing: b("README lists automated tests as future work. No test coverage or current deployment availability is claimed.", "El README incluye las pruebas automatizadas como trabajo futuro. No se afirma cobertura de pruebas ni disponibilidad actual del despliegue."),
+        evidence: b("Public repository documentation.", "Documentación pública del repositorio."),
+        links: [{
+                label: 'Repository',
+                href: "https://github.com/GaitanJulian/StatusBoard"
+            }]
+    },
 ];
-
-export const projectById = Object.fromEntries(projects.map((project) => [project.id, project]));
+export const projectById = Object.fromEntries(projects.map(project => [project.id, project]));

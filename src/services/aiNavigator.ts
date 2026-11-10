@@ -1,55 +1,21 @@
 import type { AiResponse } from '../types';
-
-const responses: { match: string[]; response: AiResponse }[] = [
-  {
-    match: ['paymentflow', 'strongest', 'case study'],
-    response: {
-      text: 'PaymentFlow is the strongest backend case study. It documents service separation, authentication, webhook verification, retries and explicit order state transitions.',
-      action: { label: 'Open PaymentFlow', fileId: 'paymentflow' },
-    },
-  },
-  {
-    match: ['backend projects', 'backend'],
-    response: {
-      text: 'The clearest backend-focused projects are PaymentFlow, IncidentHub, StatusBoard, Logistics Data Pipeline and DocuFlow.',
-      action: { label: 'Open project database', fileId: 'systems' },
-    },
-  },
-  {
-    match: ['postgres', 'postgresql'],
-    response: {
-      text: 'PostgreSQL appears in PaymentFlow, Logistics Data Pipeline, IncidentHub and DocuFlow.',
-      action: { label: 'Open capabilities.json', fileId: 'capabilities' },
-    },
-  },
-  {
-    match: ['fit', 'node.js', 'nodejs'],
-    response: {
-      text: 'The portfolio supports Node.js backend roles through projects using Node.js, TypeScript, Express, Prisma, PostgreSQL, authentication and API design, plus Campuslands internship work across internal products, APIs, n8n automations and B2B applications.',
-      action: { label: 'Open experience.log', fileId: 'experience' },
-    },
-  },
-  {
-    match: ['ai tooling', 'ai experience', 'whisper', 'ollama', 'campuslands', 'internship', 'n8n'],
-    response: {
-      text: "Julian's AI tooling context includes LLM code evaluation, local AI workflows and Campuslands internship work with n8n automations, AI agents, chatbots and external API integrations.",
-      action: { label: 'Open experience.log', fileId: 'experience' },
-    },
-  },
-  {
-    match: ['contact', 'hire', 'email'],
-    response: {
-      text: 'Professional contact options are collected in contact.sh, including GitHub, LinkedIn and the published email channel.',
-      action: { label: 'Open contact.sh', fileId: 'contact' },
-    },
-  },
-];
-
+import { bilingual as b, translate } from '../i18n/copy';
+import { professional } from '../data/professional';
 export function queryPortfolioContext(query: string): AiResponse {
-  const normalized = query.toLowerCase();
-  return (
-    responses.find((entry) => entry.match.some((term) => normalized.includes(term)))?.response ?? {
-      text: "I can answer questions about Julian's projects, stack and verified experience. Try asking about Campuslands, PaymentFlow, PostgreSQL, backend projects or AI tooling.",
-    }
-  );
+    const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (/paymentflow|pagos|payments/.test(q))
+        return { text: b('PaymentFlow is a payment simulation with Node.js/TypeScript, FastAPI, signed webhooks, retries and PostgreSQL. The current repository documentation takes precedence over the older MongoDB description.', 'PaymentFlow es una simulación de pagos con Node.js/TypeScript, FastAPI, webhooks firmados, reintentos y PostgreSQL. La documentación actual del repositorio tiene prioridad sobre la descripción antigua con MongoDB.'), action: { label: 'Open PaymentFlow', fileId: 'paymentflow' } };
+    if (/postgres/.test(q))
+        return { text: b('PostgreSQL is documented in Urban Map Bucaramanga, IncidentHub, PaymentFlow, DocuFlow and Logistics Data Pipeline. StatusBoard currently uses SQLite according to its Prisma schema.', 'PostgreSQL está documentado en Urban Map Bucaramanga, IncidentHub, PaymentFlow, DocuFlow y Logistics Data Pipeline. StatusBoard utiliza SQLite según su esquema Prisma.'), action: { label: 'Open project database', fileId: 'systems' } };
+    if (/campuslands|invisible|experience|experiencia|fit|node|trabajo|contrat/.test(q))
+        return { text: b('Campuslands: Full-Stack Developer, May–November 2026 (internship May–June; formal employment July–November), now ended. Confirmed work includes Vue.js, Node.js, API integrations, Meta/WhatsApp agents, computer vision validation and production maintenance. Invisible: Software Engineer — AI Trainer, July 2024–September 2025, remote, evaluating LLM outputs/code, tests and data quality.', 'Campuslands: desarrollador Full-Stack, mayo–noviembre de 2026 (prácticas mayo–junio; contratación julio–noviembre), finalizado. Trabajo confirmado con Vue.js, Node.js, APIs, agentes Meta/WhatsApp, validación de visión por computadora y mantenimiento en producción. Invisible: Software Engineer — AI Trainer, julio de 2024–septiembre de 2025, remoto, con evaluación de respuestas/código de LLM, pruebas y calidad de datos.'), action: { label: 'Open experience.log', fileId: 'experience' } };
+    if (/\b(ai|ia|llm)\b|vision|whisper|ollama|n8n|inteligencia/.test(q))
+        return { text: b('Confirmed AI work covers LLM output/code evaluation at Invisible and Meta/WhatsApp conversational-agent integration plus computer vision validation at Campuslands. Employment use of n8n, Whisper or Ollama is not confirmed in the updated profile.', 'El trabajo de IA confirmado incluye evaluación de respuestas y código de LLM en Invisible e integración de agentes Meta/WhatsApp y validación de visión por computadora en Campuslands. El perfil actualizado no confirma uso laboral de n8n, Whisper u Ollama.'), action: { label: 'Open experience.log', fileId: 'experience' } };
+    if (/contact|hire|email|correo|disponib|availab/.test(q))
+        return { text: b(professional.availability + ' · ' + professional.email, translate(professional.availability, 'es') + ' · ' + professional.email), action: { label: 'Open contact.sh', fileId: 'contact' } };
+    if (/education|educacion|formacion|universidad|uis|idioma|english|ingles/.test(q))
+        return { text: b(professional.degree + ' · ' + professional.university + ' · ' + professional.graduation + '. ' + professional.languages, translate(professional.degree, 'es') + ' · ' + professional.university + ' · ' + translate(professional.graduation, 'es') + '. ' + translate(professional.languages, 'es')), action: { label: 'Professional profile', fileId: 'profile' } };
+    if (/project|proyecto|backend|strongest|destacado|case study/.test(q))
+        return { text: b('Featured projects: Urban Map Bucaramanga, IncidentHub and the XR thesis. The catalog also includes PaymentFlow, DocuFlow, Logistics Data Pipeline and StatusBoard. Repository descriptions do not independently establish personal contribution or production availability.', 'Proyectos destacados: Urban Map Bucaramanga, IncidentHub y la tesis XR. El catálogo también incluye PaymentFlow, DocuFlow, Logistics Data Pipeline y StatusBoard. La descripción de un repositorio no acredita por sí sola autoría individual o disponibilidad productiva.'), action: { label: 'Open project database', fileId: 'systems' } };
+    return { text: b('I answer from the owner-provided profile and project documentation. Ask about experience, education, languages, projects, AI integrations or availability.', 'Respondo con el perfil aportado por el propietario y la documentación de proyectos. Pregunta por experiencia, formación, idiomas, proyectos, integraciones de IA o disponibilidad.') };
 }

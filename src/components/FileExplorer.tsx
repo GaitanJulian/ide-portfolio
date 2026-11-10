@@ -1,3 +1,4 @@
+import { Localized } from '../i18n/Language';
 import { useState } from 'react';
 import { visibleFileRegistry } from '../data/fileRegistry';
 import type { FileCategory, FileKind } from '../types';
@@ -48,8 +49,7 @@ export function FileExplorer({ activeFileId, onOpen, open, labUnlocked, labJustU
     );
   };
 
-  return (
-    <aside className={`file-explorer ${open ? 'is-open' : 'is-closed'}`} aria-hidden={!open}>
+  return <Localized><aside className={`file-explorer ${open ? 'is-open' : 'is-closed'}`} aria-hidden={!open}>
       <div className="panel-heading">
         <span>EXPLORER</span>
       </div>
@@ -88,14 +88,13 @@ export function FileExplorer({ activeFileId, onOpen, open, labUnlocked, labJustU
           </>
         )}
       </div>
-      <button className="explorer-ai-card" onClick={() => onOpen('paymentflow')}>
+      <button className="explorer-ai-card" onClick={() => onOpen('urban-map-bucaramanga')}>
         <span className="status-dot" />
         <span>
-          <strong>Strongest case study</strong>
-          PaymentFlow
+          <strong>Featured case study</strong>
+          Urban Map
         </span>
         <span>{'->'}</span>
       </button>
-    </aside>
-  );
+    </aside></Localized>;
 }

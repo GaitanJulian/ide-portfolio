@@ -1,3 +1,5 @@
+import { translate } from '../i18n/copy';
+import { Localized } from '../i18n/Language';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { visibleFileRegistry } from '../data/fileRegistry';
 
@@ -14,12 +16,12 @@ export function CommandPalette({ open, onClose, onOpenFile, labUnlocked }: Comma
   const inputRef = useRef<HTMLInputElement>(null);
 
   const results = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
+    const normalized = query.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const ranked = normalized
         ? visibleFileRegistry.filter((file) =>
-          [file.filename, file.path, file.title, file.summary, ...(file.tags ?? []), ...(file.keywords ?? [])]
+          [file.filename, file.path, file.title, translate(file.title, 'es'), file.summary, ...(file.tags ?? []), ...(file.keywords ?? [])]
             .join(' ')
-            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
             .includes(normalized),
         )
       : visibleFileRegistry;
@@ -45,8 +47,7 @@ export function CommandPalette({ open, onClose, onOpenFile, labUnlocked }: Comma
     onClose();
   };
 
-  return (
-    <div className="command-palette-layer" role="presentation" onMouseDown={onClose}>
+  return <Localized><div className="command-palette-layer" role="presentation" onMouseDown={onClose}>
       <section
         className="command-palette"
         role="dialog"
@@ -114,6 +115,5 @@ export function CommandPalette({ open, onClose, onOpenFile, labUnlocked }: Comma
           <span>Click outside or Esc to close</span>
         </footer>
       </section>
-    </div>
-  );
+    </div></Localized>;
 }

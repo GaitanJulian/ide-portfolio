@@ -1,3 +1,4 @@
+import { Localized } from './i18n/Language';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityRail } from './components/ActivityRail';
 import { AiNavigator } from './components/AiNavigator';
@@ -124,8 +125,7 @@ export default function App() {
     return activeFile.render();
   };
 
-  return (
-    <div className="workspace-shell">
+  return <Localized><div className="workspace-shell">
       <CyberpunkBackground />
       <TopBar
         activeFileTitle={activeFile.filename}
@@ -186,6 +186,5 @@ export default function App() {
       </div>
       <StatusBar activeFileId={workspace.activeFileId} />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} onOpenFile={openFile} labUnlocked={labState.unlocked} />
-    </div>
-  );
+    </div></Localized>;
 }

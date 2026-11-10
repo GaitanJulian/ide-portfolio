@@ -1,3 +1,5 @@
+import { useLanguage } from '../i18n/Language';
+import { Localized } from '../i18n/Language';
 interface TopBarProps {
   activeFileTitle: string;
   onOpenPalette: () => void;
@@ -13,8 +15,8 @@ export function TopBar({
   onToggleTerminal,
   onToggleAi,
 }: TopBarProps) {
-  return (
-    <header className="top-bar">
+  const { language, setLanguage } = useLanguage();
+  return <Localized><header className="top-bar">
       <div className="window-controls" aria-hidden="true">
         <i />
         <i />
@@ -36,10 +38,11 @@ export function TopBar({
       <button className="mobile-tool" onClick={onToggleTerminal} aria-label="Toggle terminal">
         &gt;_
       </button>
+      <div className="top-bar__actions"><div className="language-switch" role="group" aria-label="Language"><button type="button" aria-label="Español" aria-pressed={language === 'es'} onClick={() => setLanguage('es')}>ES</button><button type="button" aria-label="English" aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>EN</button></div>
       <button className="top-bar__ai" onClick={onToggleAi}>
         <span className="status-dot" />
         AI Navigator
       </button>
-    </header>
-  );
+      </div>
+    </header></Localized>;
 }
